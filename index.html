@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الأزمنة الستة</title>
+<title>مقرر اللغة الإنجليزية - المستوى الثاني</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
 
@@ -788,7 +788,7 @@
   };
 
   var PILLARS = {
-    islam: ["الشهادة — Testimony: there is no god but Allah, and Muhammad is His Messenger.","الصلاة — Prayer: five times a day.","الزكاة — Zakat: given once a year.","الصوم — Fasting: during the month of Ramadan.","الحج — Hajj: once in a lifetime, if able."],
+    islam: ["الشهادة — Testimony: there is no true God but Allah, and Muhammad is His Messenger.","الصلاة — Prayer: five times a day.","الزكاة — Zakat: given once a year.","الصوم — Fasting: during the month of Ramadan.","الحج — Hajj: once in a lifetime, if able."],
     iman: ["الإيمان بالله — Belief in Allah.","الإيمان بالملائكة — Belief in the Angels.","الإيمان بالكتب — Belief in the Books.","الإيمان بالأنبياء والرسل — Belief in the Prophets and Messengers.","الإيمان باليوم الآخر — Belief in the Last Day.","الإيمان بالقدر — Belief in Divine Decree, its good and its bad."]
   };
 
@@ -817,19 +817,19 @@
   ];
 
   var FATIHA_TEXT = [
-    {ar:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", en:"In the name of Allah, the Most Gracious, the Most Merciful."},
-    {ar:"الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", en:"All praise belongs to Allah, Lord of all the worlds."},
+    {ar:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", en:"In the Name of Allah, the Most Gracious, the Most Merciful."},
+    {ar:"الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", en:"All the praises and thanks be to Allah, the Lord of the 'Alamin (mankind, jinn and all that exists)."},
     {ar:"الرَّحْمَٰنِ الرَّحِيمِ", en:"The Most Gracious, the Most Merciful."},
-    {ar:"مَالِكِ يَوْمِ الدِّينِ", en:"Master of the Day of Judgment."},
-    {ar:"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", en:"You alone we worship, and You alone we ask for help."},
-    {ar:"اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", en:"Guide us to the straight path."},
-    {ar:"صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ", en:"The path of those You have blessed — not of those who earned Your anger, nor of those who went astray."}
+    {ar:"مَالِكِ يَوْمِ الدِّينِ", en:"The Only Owner (and the Only Ruling Judge) of the Day of Recompense (i.e. the Day of Resurrection)."},
+    {ar:"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", en:"You (Alone) we worship, and You (Alone) we ask for help (for each and everything)."},
+    {ar:"اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", en:"Guide us to the Straight Way."},
+    {ar:"صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ", en:"The Way of those on whom You have bestowed Your Grace, not (the way) of those who earned Your Anger (such as the Jews), nor of those who went astray (such as the Christians)."}
   ];
 
   var JIBRIL_QA = [
-    {q:"Tell me about Islam.", a:"Islam is to testify that there is no god but Allah and that Muhammad is His Messenger, to establish prayer, to give zakat, to fast Ramadan, and to make pilgrimage to the House if you are able."},
-    {q:"Tell me about Iman (faith).", a:"Iman is to believe in Allah, His angels, His Books, His messengers, and the Last Day, and to believe in divine decree, its good and its bad."},
-    {q:"Tell me about Ihsan.", a:"Ihsan is to worship Allah as though you see Him — for even though you do not see Him, He surely sees you."}
+    {q:"Inform me about Islam.", a:"Islam is that you should testify that there is no true God but Allah and that Muhammad is His Messenger, that you should perform salah (ritual prayer), pay the zakah, fast during Ramadan, and perform Hajj (pilgrimage) to the House (the Ka'bah at Makkah), if you can find a way to it."},
+    {q:"Inform me about Iman (faith).", a:"It is that you believe in Allah and His angels and His Books and His Messengers and in the Last Day, and in fate (qadar), both in its good and its evil aspects."},
+    {q:"Inform me about Ihsan.", a:"It is that you should serve Allah as though you could see Him, for though you cannot see Him yet He sees you."}
   ];
 
   /* ============ STATE ============ */
@@ -1221,8 +1221,8 @@
   function renderNav(){
     var nav = document.getElementById("nav");
     nav.innerHTML = "";
-    nav.appendChild(el("div","brand","الأزمنة الستة"));
-    nav.appendChild(el("div","brand-sub","دورة تفاعلية للدراسة الذاتية — الحياة اليومية، والفاتحة، وحديث جبريل، والأصول الثلاثة"));
+    nav.appendChild(el("div","brand","مقرر اللغة الإنجليزية"));
+    nav.appendChild(el("div","brand-sub","المستوى الثاني — مقرر تفاعلي للدراسة الذاتية — الحياة اليومية، والفاتحة، وحديث جبريل، والأصول الثلاثة"));
 
     function makeBtn(id, label, dotColor){
       var b = el("button","nav-btn"+(active===id?" active":""));
@@ -1256,8 +1256,8 @@
 
   /* ============ RENDER: INTRO ============ */
   function renderIntro(container){
-    container.appendChild(el("h1","","دورة الأزمنة الإنجليزية الستة"));
-    container.appendChild(el("p","lede","دورة تفاعلية ذاتية التصحيح، تشرح الأزمنة الستة الأساسية في اللغة الإنجليزية، وتدعم كل درس بأمثلة من الحياة اليومية، ومن سورة الفاتحة، وحديث جبريل، ومتن الأصول الثلاثة — مع تدريبات تُصحَّح فور الإجابة عليها."));
+    container.appendChild(el("h1","","مقرر اللغة الإنجليزية - المستوى الثاني"));
+    container.appendChild(el("p","lede","مقرر تفاعلي ذاتي التصحيح، يشرح الأزمنة الستة الأساسية في اللغة الإنجليزية، ويدعم كل درس بأمثلة من الحياة اليومية، ومن سورة الفاتحة، وحديث جبريل، ومتن الأصول الثلاثة — مع تدريبات تُصحَّح فور الإجابة عليها."));
 
     var howCard = el("div","card");
     howCard.appendChild(el("h3","كيف تدرسين بنفسك؟"));
@@ -1267,7 +1267,7 @@
       "اقرئي شرح الاستخدام والصياغة أولًا، وانتبهي لقسم «الأخطاء الشائعة».",
       "تأملي الأمثلة: من الحياة اليومية، ثم من النصوص الثلاثة، ولاحظي وسم المصدر بجانب كل جملة.",
       "أدّي التدريبات الثلاثة في كل درس: أكملي الفراغ، ثم اختاري الإجابة الصحيحة، ثم صحّحي الجملة الخاطئة أو ترجمي — وستظهر لك إشارة ✓ عند إتمام الدرس في القائمة الجانبية.",
-      "أنهي الدورة باختبار المراجعة الشامل الذي يجمع الأزمنة الستة معًا."
+      "أنهي المقرر باختبار المراجعة الشامل الذي يجمع الأزمنة الستة معًا."
     ].forEach(function(s,i){
       var li = document.createElement("li");
       li.innerHTML = "<span class=\"step-n\">"+(i+1)+"</span><span>"+s+"</span>";
@@ -1289,8 +1289,8 @@
     container.appendChild(aboutCard);
 
     var textsCard = el("div","card");
-    textsCard.appendChild(el("h3","نصوص المصادر (بترجمة ميسّرة للدارسة)"));
-    textsCard.appendChild(el("p","lede","النص الكامل للفاتحة ولبِ حديث جبريل، بترجمة إنجليزية مبسّطة تلائم مستوى الدورة — ارجعي إليها كلما احتجتِ سياق الأمثلة أعلاه."));
+    textsCard.appendChild(el("h3","نصوص المصادر"));
+    textsCard.appendChild(el("p","lede","النص الكامل لآيات الفاتحة، ولبِ حديث جبريل، بالترجمة الإنجليزية المعتمدة في مادة المقرر — ارجعي إليها كلما احتجتِ سياق الأمثلة أعلاه."));
 
     var fatihaBlock = el("div","");
     fatihaBlock.appendChild(el("h4","", "سورة الفاتحة"));
@@ -1349,7 +1349,7 @@
 
     var gridCard = el("div","card");
     gridCard.appendChild(el("h3","خريطة الأزمنة الاثني عشر في الإنجليزية"));
-    gridCard.appendChild(el("p","lede","الأزمنة الستة التي تدرسينها في هذه الدورة (البسيط والمستمر) هي نصف الصورة فقط — وهذا الجدول يضعها في سياق الاثني عشر زمنًا كاملة، بفعل واحد: "+"<span class=\"en\">"+TWELVE_TENSES.verb+"</span>."));
+    gridCard.appendChild(el("p","lede","الأزمنة الستة التي تدرسينها في هذا المقرر (البسيط والمستمر) هي نصف الصورة فقط — وهذا الجدول يضعها في سياق الاثني عشر زمنًا كاملة، بفعل واحد: "+"<span class=\"en\">"+TWELVE_TENSES.verb+"</span>."));
     var tenseTable = document.createElement("table");
     var thead = "<tr><th></th><th>الماضي</th><th>المضارع</th><th>المستقبل</th></tr>";
     var tbody = TWELVE_TENSES.rows.map(function(row){
@@ -1357,7 +1357,7 @@
     }).join("");
     tenseTable.innerHTML = thead+tbody;
     gridCard.appendChild(tenseTable);
-    gridCard.appendChild(el("p","lede","الملوّنة بالخلفية في القائمة الجانبية هي الأزمنة الستة الأساسية (البسيط والمستمر) التي تغطيها هذه الدورة بالتفصيل."));
+    gridCard.appendChild(el("p","lede","الملوّنة بالخلفية في القائمة الجانبية هي الأزمنة الستة الأساسية (البسيط والمستمر) التي يغطيها هذا المقرر بالتفصيل."));
     container.appendChild(gridCard);
 
     var legendCard = el("div","card");
@@ -1613,7 +1613,7 @@
 
   function renderGlossary(container){
     container.appendChild(el("h1","","📚 قاموس المصطلحات"));
-    container.appendChild(el("p","lede","أهم المفردات الواردة في نصوص الدورة (حديث جبريل، والأصول الثلاثة) — اكتبي في المربع للبحث بالعربية أو الإنجليزية."));
+    container.appendChild(el("p","lede","أهم المفردات الواردة في نصوص المقرر (حديث جبريل، والأصول الثلاثة) — اكتبي في المربع للبحث بالعربية أو الإنجليزية."));
 
     var fcCard = el("div","card");
     fcCard.appendChild(el("h3","🗂️ بطاقات تعليمية"));
