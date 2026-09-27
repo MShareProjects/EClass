@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأزمنة الستة</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root{
+    --bg:#faf6ee;
+    --surface:#ffffff;
+    --surface-alt:#f4ecdd;
+    --ink:#2a231c;
+    --ink-soft:#6b5f52;
+    --border:#e6d9c2;
+    --primary:#0d7d72;
+    --primary-soft:#d7efec;
+    --shadow: 0 1px 2px rgba(42,35,28,.06), 0 6px 20px -8px rgba(42,35,28,.18);
+    --radius: 14px;
+    --font-ar-display:'Amiri', 'Traditional Arabic', serif;
+    --font-ar-body:'Tajawal','Segoe UI',sans-serif;
+    --font-en:'Lora','Georgia',serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#161210;
+      --surface:#201b16;
+      --surface-alt:#28221b;
+      --ink:#f1e9db;
+      --ink-soft:#c3b8a6;
+      --border:#3c332a;
+      --primary:#4fc0b2;
+      --primary-soft:#1c3934;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -8px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#161210;
+    --surface:#201b16;
+    --surface-alt:#28221b;
+    --ink:#f1e9db;
+    --ink-soft:#c3b8a6;
+    --border:#3c332a;
+    --primary:#4fc0b2;
+    --primary-soft:#1c3934;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -8px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    margin:0;
+    font-family:var(--font-ar-body);
+  }
+  .page{direction:rtl; text-align:right; min-height:100%;}
+  .en{font-family:var(--font-en); direction:ltr; unicode-bidi:isolate;}
+
+  /* ---------- Shell layout ---------- */
+  .shell{
+    display:flex;
+    min-height:100vh;
+  }
+  .nav{
+    flex:0 0 260px;
+    background:var(--surface);
+    border-inline-start:1px solid var(--border);
+    padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    position:sticky;
+    top:0;
+    align-self:flex-start;
+    height:100vh;
+    overflow-y:auto;
+  }
+  .brand{
+    font-family:var(--font-ar-display);
+    font-size:1.5rem;
+    font-weight:700;
+    color:var(--primary);
+    margin:4px 4px 2px;
+  }
+  .brand-sub{
+    font-size:.78rem;
+    color:var(--ink-soft);
+    margin:0 4px 16px;
+    line-height:1.5;
+  }
+  .nav-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    text-align:right;
+    background:none;
+    border:1px solid transparent;
+    border-radius:10px;
+    padding:10px 12px;
+    font-family:var(--font-ar-body);
+    font-size:.92rem;
+    font-weight:500;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .nav-btn:hover{background:var(--surface-alt);}
+  .nav-btn.active{
+    background:var(--accent-soft, var(--primary-soft));
+    border-color:var(--accent, var(--primary));
+    color:var(--ink);
+    font-weight:700;
+  }
+  .nav-dot{
+    flex:0 0 10px; width:10px; height:10px; border-radius:50%;
+    background:var(--accent, var(--primary));
+  }
+  .nav-check{margin-inline-start:auto; font-size:.8rem; color:var(--accent,var(--primary));}
+  .nav-progress{
+    margin-top:14px; padding:12px; border-radius:10px; background:var(--surface-alt);
+    font-size:.78rem; color:var(--ink-soft);
+  }
+  .nav-progress-bar{height:6px;border-radius:4px;background:var(--border);overflow:hidden;margin-top:6px;}
+  .nav-progress-fill{height:100%;background:var(--primary);border-radius:4px;transition:width .3s;}
+
+  .main{
+    flex:1;
+    min-width:0;
+    padding:32px clamp(16px,4vw,56px) 80px;
+  }
+  .container{max-width:760px; margin:0 auto;}
+
+  /* mobile top tabs */
+  .mobile-tabs{display:none;}
+
+  @media (max-width: 860px){
+    .shell{flex-direction:column;}
+    .nav{
+      position:sticky; top:0; height:auto; width:100%; flex-direction:row;
+      overflow-x:auto; overflow-y:hidden; padding:10px 12px; gap:8px;
+      border-inline-start:none; border-bottom:1px solid var(--border);
+      align-items:center;
+      scrollbar-width:thin;
+      z-index:5;
+    }
+    .brand,.brand-sub,.nav-progress{display:none;}
+    .nav-btn{flex:0 0 auto; white-space:nowrap;}
+    .main{padding:20px 16px 64px;}
+  }
+
+  /* ---------- Typography ---------- */
+  h1,h2,h3{font-family:var(--font-ar-display); font-weight:700; text-wrap:balance; margin:0 0 8px;}
+  h1{font-size:2rem;}
+  h2{font-size:1.5rem; color:var(--accent, var(--primary));}
+  h3{font-size:1.1rem;}
+  p{line-height:1.9; margin:0 0 12px; color:var(--ink);}
+  .lede{color:var(--ink-soft); font-size:1rem; line-height:1.8;}
+
+  .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--accent-soft, var(--primary-soft));
+    color:var(--accent, var(--primary));
+    border:1px solid var(--accent, var(--primary));
+    border-radius:999px; padding:3px 12px; font-size:.78rem; font-weight:700;
+  }
+  .lesson-head{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    flex-wrap:wrap; margin-bottom:6px;
+  }
+  .lesson-num{
+    font-family:var(--font-en); font-size:.8rem; color:var(--ink-soft); letter-spacing:.06em;
+  }
+  .en-title{font-family:var(--font-en); font-style:italic; color:var(--ink-soft); font-size:1.1rem;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px 22px; margin:0 0 20px; box-shadow:var(--shadow);
+  }
+  .card h3{color:var(--accent, var(--primary)); border-bottom:2px solid var(--accent-soft,var(--primary-soft)); padding-bottom:8px; margin-bottom:14px;}
+
+  .timeline-fig{margin:0; padding:6px 0 0;}
+  .timeline-fig svg{width:100%; max-width:560px; height:auto; display:block; margin:0 auto; color:var(--ink);}
+  .timeline-fig figcaption{
+    text-align:center; font-size:.86rem; color:var(--ink-soft); margin-top:10px; line-height:1.7;
+  }
+
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0 4px;}
+  @media (max-width:560px){.form-grid{grid-template-columns:1fr;}}
+  .form-item{background:var(--surface-alt); border-radius:10px; padding:10px 12px; font-size:.88rem;}
+  .form-item b{display:block; font-size:.72rem; color:var(--ink-soft); font-weight:700; margin-bottom:3px;}
+
+  table{width:100%; border-collapse:collapse; font-size:.85rem; margin:10px 0;}
+  th,td{border:1px solid var(--border); padding:8px 10px; text-align:right; vertical-align:top;}
+  th{background:var(--surface-alt);}
+
+  ul.tight, ol.tight{margin:6px 0 0; padding-inline-start:22px; line-height:1.9;}
+  .mistakes li{margin-bottom:6px;}
+  .wrong{color:#a3261e; font-weight:500;}
+  .wrong::before{content:"✗ "; font-weight:700;}
+  .right{color:#146c43; font-weight:600;}
+  .right::before{content:"✓ "; font-weight:700;}
+
+  /* examples */
+  .ex-group{margin-bottom:16px;}
+  .ex-group h4{font-size:.85rem; color:var(--ink-soft); font-weight:700; margin:0 0 8px; display:flex; align-items:center; gap:8px;}
+  .ex-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .ex-list li{
+    background:var(--surface-alt); border-radius:10px; padding:10px 14px;
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  }
+  .src-tag{
+    flex:0 0 auto; font-size:.7rem; font-weight:700; color:var(--accent,var(--primary));
+    background:var(--accent-soft,var(--primary-soft)); border-radius:6px; padding:2px 8px;
+  }
+  .ex-en{font-family:var(--font-en); font-size:1.02rem; direction:ltr; text-align:left; flex:1; min-width:200px;}
+
+  /* exercises */
+  .exercise-set{margin-bottom:22px; border-top:1px dashed var(--border); padding-top:16px;}
+  .exercise-set:first-of-type{border-top:none; padding-top:0;}
+  .ex-item{margin-bottom:12px;}
+  .ex-prompt{font-family:var(--font-en); direction:ltr; text-align:left; font-size:.98rem; margin-bottom:6px;}
+  .ex-prompt .num{font-family:var(--font-ar-body); color:var(--ink-soft); font-weight:700; margin-right:10px; display:inline-block;}
+  input.blank{
+    font-family:var(--font-en); direction:ltr; border:1.5px solid var(--border); border-radius:8px;
+    padding:5px 8px; font-size:.95rem; width:150px; background:var(--surface); color:var(--ink);
+  }
+  input.blank:focus{outline:2px solid var(--accent,var(--primary)); outline-offset:1px;}
+  input.blank.ok{border-color:#2e7d32; background:#eaf6ea;}
+  input.blank.bad{border-color:#c62828; background:#fdecea;}
+  @media (prefers-color-scheme: dark){
+    input.blank.ok{background:#173a1c;}
+    input.blank.bad{background:#3a1717;}
+  }
+
+  .mcq-q{margin-bottom:14px;}
+  .mcq-opts{display:flex; flex-direction:column; gap:6px; margin-top:6px;}
+  .mcq-opt{
+    display:flex; align-items:center; gap:8px; font-family:var(--font-en); direction:ltr; text-align:left;
+    background:var(--surface); border:1.5px solid var(--border); border-radius:8px; padding:6px 10px;
+    cursor:pointer; font-size:.92rem;
+  }
+  .mcq-opt.correct{border-color:#2e7d32; background:#eaf6ea; font-weight:700;}
+  .mcq-opt.incorrect{border-color:#c62828; background:#fdecea;}
+  @media (prefers-color-scheme: dark){
+    .mcq-opt.correct{background:#173a1c;}
+    .mcq-opt.incorrect{background:#3a1717;}
+  }
+
+  /* ---------- Flashcards ---------- */
+  .flip-hint{font-size:.76rem; color:var(--ink-soft); margin:-4px 0 14px;}
+  .flip-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; margin:10px 0 6px;}
+  .flip-card{perspective:1000px; cursor:pointer; min-height:100px; outline:none;}
+  .flip-card-inner{
+    position:relative; width:100%; height:100%; min-height:100px;
+    transition:transform .5s; transform-style:preserve-3d;
+  }
+  .flip-card.flipped .flip-card-inner{transform:rotateY(180deg);}
+  .flip-card-face{
+    position:absolute; inset:0; -webkit-backface-visibility:hidden; backface-visibility:hidden;
+    border-radius:10px; display:flex; align-items:center; justify-content:center; text-align:center;
+    padding:10px; font-size:.85rem; line-height:1.35; box-shadow:var(--shadow); overflow:auto;
+  }
+  .flip-card-front{background:var(--surface-alt); color:var(--ink);}
+  .flip-card-back{background:var(--accent-soft,var(--primary-soft)); color:var(--ink); transform:rotateY(180deg); font-weight:700;}
+  .flip-card:focus-visible .flip-card-face{outline:2px solid var(--accent,var(--primary));}
+
+  /* ---------- Drag & drop ---------- */
+  .drag-item{margin-bottom:22px; padding-bottom:18px; border-bottom:1px dashed var(--border);}
+  .drag-item:last-child{border-bottom:none; margin-bottom:0; padding-bottom:0;}
+  .drag-slots{
+    display:flex; flex-wrap:wrap; gap:8px; direction:ltr; text-align:left; margin:10px 0;
+    min-height:44px; padding:10px; background:var(--surface-alt); border-radius:10px;
+  }
+  .drag-slot{
+    min-width:54px; height:34px; border:1.5px dashed var(--border); border-radius:8px;
+    display:flex; align-items:center; justify-content:center; padding:0 8px;
+    font-family:var(--font-en); font-size:.92rem; background:var(--surface); box-sizing:border-box;
+  }
+  .drag-slot.filled{border-style:solid; cursor:pointer;}
+  .drag-slot.correct{border-color:#2e7d32; background:#eaf6ea;}
+  .drag-slot.incorrect{border-color:#c62828; background:#fdecea;}
+  @media (prefers-color-scheme: dark){
+    .drag-slot.correct{background:#173a1c;}
+    .drag-slot.incorrect{background:#3a1717;}
+  }
+  .drag-bank{display:flex; flex-wrap:wrap; gap:8px; direction:ltr; text-align:left; margin-top:10px;}
+  .chip{
+    font-family:var(--font-en); font-size:.92rem; background:var(--accent-soft,var(--primary-soft));
+    color:var(--ink); border:1px solid var(--accent,var(--primary)); border-radius:8px;
+    padding:6px 12px; cursor:grab; user-select:none;
+  }
+  .chip:active{cursor:grabbing;}
+  .drag-actions{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:6px;}
+
+  .cat-bank{display:flex; flex-wrap:wrap; gap:8px; direction:ltr; text-align:left; margin-bottom:14px;}
+  .cat-chip{
+    font-family:var(--font-en); font-size:.85rem; direction:ltr; text-align:left;
+    background:var(--accent-soft,var(--primary-soft)); color:var(--ink);
+    border:1px solid var(--accent,var(--primary)); border-radius:8px;
+    padding:7px 12px; cursor:grab; user-select:none; max-width:100%;
+  }
+  .cat-chip:active{cursor:grabbing;}
+  .cat-zones{display:flex; flex-wrap:wrap; gap:10px; direction:ltr;}
+  .cat-zone{
+    flex:1 1 160px; min-height:76px; border:1.5px dashed var(--border); border-radius:10px;
+    padding:8px; display:flex; flex-direction:column; gap:6px; background:var(--surface-alt); box-sizing:border-box;
+  }
+  .cat-zone .zone-label{font-family:var(--font-ar-body); font-size:.74rem; font-weight:700; color:var(--ink-soft); direction:rtl; text-align:right;}
+  .cat-zone.filled{border-style:solid;}
+  .cat-zone.correct{border-color:#2e7d32; background:#eaf6ea;}
+  .cat-zone.incorrect{border-color:#c62828; background:#fdecea;}
+  @media (prefers-color-scheme: dark){
+    .cat-zone.correct{background:#173a1c;}
+    .cat-zone.incorrect{background:#3a1717;}
+  }
+
+  .btn{
+    font-family:var(--font-ar-body); font-weight:700; font-size:.88rem; cursor:pointer;
+    background:var(--accent, var(--primary)); color:#fff; border:none; border-radius:999px;
+    padding:9px 20px;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn.ghost{background:none; border:1.5px solid var(--accent,var(--primary)); color:var(--accent,var(--primary));}
+  .score-line{font-size:.86rem; font-weight:700; margin-top:8px; color:var(--accent,var(--primary));}
+
+  .reveal-item{background:var(--surface-alt); border-radius:10px; padding:12px 14px; margin-bottom:10px;}
+  .reveal-item .en{display:block; margin:6px 0;}
+  .ar-src{display:block; margin:6px 0; direction:rtl; text-align:right; font-family:var(--font-ar-body); font-size:1rem;}
+  .reveal-ans{display:none; margin-top:6px; padding-top:6px; border-top:1px dashed var(--border);}
+  .reveal-ans.shown{display:block;}
+  .reveal-row{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:6px;}
+  .self-check{display:flex; align-items:center; gap:6px; font-size:.82rem; color:var(--ink-soft);}
+
+  .tip{
+    background:var(--accent-soft, var(--primary-soft)); border-radius:10px; padding:12px 16px;
+    font-size:.86rem; color:var(--ink); display:flex; gap:10px; align-items:flex-start; margin-top:24px;
+  }
+
+  .about-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+  @media (max-width:700px){.about-grid{grid-template-columns:1fr;}}
+  .about-card{background:var(--surface-alt); border-radius:10px; padding:14px 16px;}
+  .about-card h4{margin:0 0 6px; font-size:.95rem; color:var(--primary);}
+  .about-card p{font-size:.84rem; color:var(--ink-soft); margin:0; line-height:1.8;}
+
+  .steps{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .steps li{display:flex; gap:12px; align-items:flex-start;}
+  .step-n{
+    flex:0 0 26px; height:26px; border-radius:50%; background:var(--primary); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:700;
+    font-family:var(--font-en);
+  }
+
+  .legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
+  .legend-chip{display:flex; align-items:center; gap:6px; font-size:.78rem; background:var(--surface-alt); border-radius:999px; padding:4px 10px;}
+  .legend-dot{width:9px;height:9px;border-radius:50%;}
+
+  footer.credit{text-align:center; font-size:.75rem; color:var(--ink-soft); margin-top:40px;}
+</style>
+</head>
+<body>
+<div class="page" dir="rtl" lang="ar">
+  <div class="shell">
+    <nav class="nav" id="nav"></nav>
+    <main class="main"><div class="container" id="content"></div></main>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+
+  /* ============ DATA ============ */
+  var TENSES = [
+    {
+      id:"t1", n:1, key:"present-simple",
+      nameAr:"المضارع البسيط", nameEn:"Present Simple",
+      tagline:"عادات، حقائق ثابتة، وأوصاف دائمة",
+      timelineKind:"repeated",
+      timelineCaption:"الأفعال المتكرّرة تمتد عبر الماضي والحاضر والمستقبل معًا — لأنها عادة أو حقيقة ثابتة، لا لحظة واحدة بذاتها.",
+      accent:"#0d7d72", accentSoft:"#d7efec", accentSoftDark:"#153c36",
+      usageHtml:
+        "<p>لكل جملة في المضارع البسيط فعل، ويُبنى بإحدى طريقتين أساسيتين — <b>لا تُعدّ إحداهما استثناءً على الأخرى</b>:</p>"+
+        "<ol class=\"tight\">"+
+        "<li><b>فعل حركي</b> (work, pray, believe…) — يُضاف له <span class=\"en\">-s/-es</span> مع <span class=\"en\">he/she/it</span>.</li>"+
+        "<li><b>فعل الكينونة <span class=\"en\">to be</span></b> (<span class=\"en\">am/is/are</span>) — للوصف أو تحديد الهوية أو المكان، بلا أي حركة. هذا ما تعبّر عنه العربية غالبًا بجملة اسمية بلا فعل — لكن الإنجليزية لا تسمح بإسقاط الفعل أبدًا.</li>"+
+        "</ol>"+
+        "<div class=\"form-grid\">"+
+        "<div class=\"form-item\"><b>مثبت</b><span class=\"en\">She works. / Allah is One.</span></div>"+
+        "<div class=\"form-item\"><b>منفي</b><span class=\"en\">She doesn't work. / It isn't far.</span></div>"+
+        "<div class=\"form-item\"><b>سؤال</b><span class=\"en\">Does she work? / Is it far?</span></div>"+
+        "<div class=\"form-item\"><b>علامات زمنية</b><span class=\"en\">always, usually, often, every day, never</span></div>"+
+        "</div>"+
+        "<p><b>قاعدة الإملاء مع <span class=\"en\">he/she/it</span>:</b> غالبًا <span class=\"en\">+s</span> — والمنتهي بـ <span class=\"en\">-o/-ch/-sh/-ss/-x</span> يأخذ <span class=\"en\">-es</span> (<span class=\"en\">go→goes, watch→watches</span>) — وساكن+<span class=\"en\">y</span> تصبح <span class=\"en\">-ies</span> (<span class=\"en\">study→studies</span>) بينما حرف علة+<span class=\"en\">y</span> تأخذ <span class=\"en\">-s</span> فقط (<span class=\"en\">play→plays</span>).</p>"+
+        "<p><b>أخطاء شائعة:</b></p><ul class=\"tight mistakes\">"+
+        "<li><span class=\"en wrong\">He go to work.</span> ← <span class=\"en right\">He goes to work.</span> (لا تُسقطي <span class=\"en\">s</span> مع <span class=\"en\">he/she/it</span>)</li>"+
+        "<li><span class=\"en wrong\">My father doctor.</span> ← <span class=\"en right\">My father is a doctor.</span> (الجملة الاسمية بالعربية تحتاج <span class=\"en\">to be</span> بالإنجليزية)</li>"+
+        "</ul>",
+      daily:[
+        "I wake up before Fajr every day.",
+        "My father drives to work at seven o'clock.",
+        "She studies at the college on Sundays and Tuesdays.",
+        "We usually have breakfast together.",
+        "The library closes at nine in the evening.",
+        "My sister doesn't drink coffee.",
+        "Do you walk or take the bus to college?",
+        "My grandmother is kind and patient."
+      ],
+      sourced:[
+        {src:"الفاتحة", text:"Allah is the Lord of all the worlds."},
+        {src:"الفاتحة", text:"He is the Most Merciful."},
+        {src:"الفاتحة", text:"Every Muslim recites Surah Al-Fatiha in every unit of prayer."},
+        {src:"حديث جبريل", text:"The Hadith of Jibril explains the meaning of Islam, Iman, and Ihsan."},
+        {src:"حديث جبريل", text:"A Muslim believes in Allah, His angels, His books, and His messengers."},
+        {src:"حديث جبريل", text:"Ihsan means that a worshipper worships Allah as if he sees Him."},
+        {src:"الأصول الثلاثة", text:"Allah is our Lord, our Creator, and our Sustainer."},
+        {src:"الأصول الثلاثة", text:"Every Muslim needs to know three fundamental principles."},
+        {src:"الأصول الثلاثة", text:"Prophet Muhammad ﷺ is the final messenger of Allah."},
+        {src:"آية قرآنية ٦:١٦٢", text:"\"Indeed, my prayer, my rites of sacrifice, my living and my dying are for Allah, Lord of the worlds.\""}
+      ],
+      fill:[
+        {p:"My mother ___ (cook) breakfast every morning.", a:["cooks"]},
+        {p:"Muslims ___ (believe) in one God, Allah.", a:["believe"]},
+        {p:"He ___ (not / drink) tea before Fajr.", a:["doesn't drink","does not drink"]},
+        {p:"___ you ___ (pray) five times a day?", a:["do you pray"]},
+        {p:"The Hadith of Jibril ___ (explain) the three levels of religion.", a:["explains"]},
+        {p:"Allah ___ (know) what is in every heart.", a:["knows"]}
+      ],
+      mcq:[
+        {q:"My father ___ to work every day.", opts:["drive","is driving","drives"], correct:2},
+        {q:"Allah ___ the Most Merciful.", opts:["is","am","are"], correct:0},
+        {q:"___ she study English on Sundays?", opts:["Is","Do","Does"], correct:2},
+        {q:"The Hadith of Jibril ___ three levels of religion.", opts:["explains","explain","is explain"], correct:0},
+        {q:"My brothers ___ tall.", opts:["is","am","are"], correct:2},
+        {q:"A sincere worshipper ___ Allah as if he sees Him.", opts:["worship","is worship","worships"], correct:2}
+      ],
+      reveal:[
+        {wrong:"My father doctor.", right:"My father is a doctor."},
+        {wrong:"She study every day.", right:"She studies every day."},
+        {wrong:"الله واحد.", right:"Allah is One.", translate:true},
+        {wrong:"المسلم يصلي خمس مرات في اليوم.", right:"A Muslim prays five times a day.", translate:true}
+      ]
+    },
+    {
+      id:"t2", n:2, key:"present-continuous",
+      nameAr:"المضارع المستمر", nameEn:"Present Continuous",
+      tagline:"فعل يحدث الآن، أو وضع مؤقّت هذه الأيام",
+      timelineKind:"now-progress",
+      timelineCaption:"الفعل يحدث الآن بالضبط — بدأ قبل لحظة الكلام ولم ينتهِ بعد.",
+      accent:"#b8720b", accentSoft:"#f7e8cf", accentSoftDark:"#3a2a10",
+      usageHtml:
+        "<p>الصياغة: الفاعل + <span class=\"en\">am/is/are</span> + الفعل<span class=\"en\">+ing</span>.</p>"+
+        "<div class=\"form-grid\">"+
+        "<div class=\"form-item\"><b>مثبت</b><span class=\"en\">I am writing. She is cooking.</span></div>"+
+        "<div class=\"form-item\"><b>منفي</b><span class=\"en\">I'm not sleeping.</span></div>"+
+        "<div class=\"form-item\"><b>سؤال</b><span class=\"en\">Is she working today?</span></div>"+
+        "<div class=\"form-item\"><b>علامات زمنية</b><span class=\"en\">now, right now, at the moment, Look!, these days, this week</span></div>"+
+        "</div>"+
+        "<p><b>قاعدة الإملاء مع <span class=\"en\">-ing</span>:</b> غالبًا <span class=\"en\">+ing</span> — و<span class=\"en\">e</span> الصامتة تُحذف (<span class=\"en\">write→writing</span>) — والمقطع القصير المشدد يُضاعِف آخر حرف ساكن (<span class=\"en\">run→running</span>) إلا بعد <span class=\"en\">w, x, y</span>.</p>"+
+        "<p><b>يُستخدم من أجل:</b> فعل يحدث الآن، وضع مؤقت هذه الأيام/هذا الأسبوع، وترتيب مستقبلي محدد.</p>"+
+        "<p><b>تنبيه:</b> أفعال الحالة (<span class=\"en\">believe, know, want, love, understand</span>) نادرًا ما تُستخدم مع <span class=\"en\">-ing</span>.</p>"+
+        "<ul class=\"tight mistakes\">"+
+        "<li><span class=\"en wrong\">I am believing in God.</span> ← <span class=\"en right\">I believe in God.</span></li>"+
+        "<li><span class=\"en wrong\">She cooking now.</span> ← <span class=\"en right\">She is cooking now.</span> (لا تُسقطي <span class=\"en\">am/is/are</span>)</li>"+
+        "</ul>",
+      daily:[
+        "I am writing this exercise right now.",
+        "She is preparing dinner at the moment.",
+        "Look! It is raining outside.",
+        "We are studying grammar this week.",
+        "He is driving to work — that's why he isn't answering.",
+        "They are watching the news tonight.",
+        "This month, I am learning to type faster.",
+        "My phone is ringing — can you answer it?"
+      ],
+      sourced:[
+        {src:"الفاتحة", text:"Right now, the worshippers are reciting Surah Al-Fatiha in prayer."},
+        {src:"الفاتحة", text:"Listen! The imam is reciting the Fatiha aloud in Maghrib prayer."},
+        {src:"الفاتحة", text:"These days, new Muslims are memorizing Al-Fatiha first."},
+        {src:"حديث جبريل", text:"In this story, a stranger is asking the Prophet ﷺ about the meaning of religion."},
+        {src:"حديث جبريل", text:"Right now, we are learning about Islam, Iman, and Ihsan."},
+        {src:"حديث جبريل", text:"The Companions are listening carefully to every answer."},
+        {src:"الأصول الثلاثة", text:"This term, students are studying the Three Fundamental Principles."},
+        {src:"الأصول الثلاثة", text:"We are learning who our Lord is and who our Prophet is."},
+        {src:"الأصول الثلاثة", text:"The teacher is explaining the six pillars of Iman today."}
+      ],
+      fill:[
+        {p:"She ___ (cook) dinner at the moment.", a:["is cooking"]},
+        {p:"Look! It ___ (rain).", a:["is raining"]},
+        {p:"We ___ (not / watch) TV right now; we ___ (study).", a:["aren't watching / are studying","are not watching / are studying"]},
+        {p:"___ you ___ (learn) the story of Hadith Jibril this week?", a:["are you learning"]},
+        {p:"The teacher ___ (explain) the Three Principles today.", a:["is explaining"]},
+        {p:"I ___ (write) my homework now.", a:["am writing"]}
+      ],
+      mcq:[
+        {q:"He ___ praying in the mosque right now.", opts:["am","are","is"], correct:2},
+        {q:"Look! They ___ hard.", opts:["work","are working","works"], correct:1},
+        {q:"This week, the mosque ___ extra classes.", opts:["offer","offers","is offering"], correct:2},
+        {q:"___ your sister reading the Quran now?", opts:["Is","Am","Are"], correct:0},
+        {q:"I ___ to cook this month.", opts:["learns","learn","am learning"], correct:2},
+        {q:"The Companions ___ carefully.", opts:["listens","are listening","is listening"], correct:1}
+      ],
+      reveal:[
+        {wrong:"I am believing in God.", right:"I believe in God."},
+        {wrong:"She cooking now.", right:"She is cooking now."},
+        {wrong:"انظر! إنه يمطر.", right:"Look! It is raining.", translate:true},
+        {wrong:"هذا الأسبوع، ندرس الأصول الثلاثة.", right:"This week, we are studying the Three Fundamental Principles.", translate:true}
+      ]
+    },
+    {
+      id:"t3", n:3, key:"past-simple",
+      nameAr:"الماضي البسيط", nameEn:"Past Simple",
+      tagline:"حدث انتهى في وقت محدد من الماضي",
+      timelineKind:"past-point",
+      timelineCaption:"لحظة واحدة محددة، انتهت تمامًا في الماضي، قبل الآن.",
+      accent:"#a3123a", accentSoft:"#f6dbe3", accentSoftDark:"#3a1420",
+      usageHtml:
+        "<p>الصياغة: الفعل المنتظم <span class=\"en\">+ed</span> (<span class=\"en\">work→worked</span>) أو فعل شاذ له صيغة خاصة (<span class=\"en\">go→went, come→came</span>).</p>"+
+        "<div class=\"form-grid\">"+
+        "<div class=\"form-item\"><b>مثبت</b><span class=\"en\">He arrived yesterday.</span></div>"+
+        "<div class=\"form-item\"><b>منفي</b><span class=\"en\">He didn't arrive.</span> (يعود الفعل لأصله)</div>"+
+        "<div class=\"form-item\"><b>سؤال</b><span class=\"en\">Did he arrive?</span></div>"+
+        "<div class=\"form-item\"><b>علامات زمنية</b><span class=\"en\">yesterday, last week, ago, in 610 CE, one day, when...</span></div>"+
+        "</div>"+
+        "<p><b>يُستخدم من أجل:</b> حدث منتهٍ في وقت محدد من الماضي، وسلسلة أحداث ماضية متتابعة — وهذا يجعله زمن السرد والقصص بامتياز.</p>"+
+        "<p><b>خطأ شائع:</b> بعد <span class=\"en\">did / didn't</span> يعود الفعل إلى صورته الأصلية بلا <span class=\"en\">-ed</span> ثانية.</p>"+
+        "<ul class=\"tight mistakes\"><li><span class=\"en wrong\">He didn't went to Madinah.</span> ← <span class=\"en right\">He didn't go to Madinah.</span></li></ul>",
+      daily:[
+        "I woke up early yesterday.",
+        "My mother cooked a big dinner last night.",
+        "We visited my grandparents last Friday.",
+        "He didn't finish his homework yesterday.",
+        "Did you call your sister this morning?",
+        "The bus arrived late today.",
+        "I studied English for two hours yesterday.",
+        "They didn't watch the match last night."
+      ],
+      sourced:[
+        {src:"حديث جبريل", text:"One day, a stranger appeared before the Prophet ﷺ and his Companions."},
+        {src:"حديث جبريل", text:"The man asked the Prophet ﷺ about Islam, Iman, and Ihsan."},
+        {src:"حديث جبريل", text:"After the man left, the Prophet ﷺ told his Companions that the visitor was the angel Jibril."},
+        {src:"الأصول الثلاثة", text:"Allah created the heavens and the earth."},
+        {src:"الأصول الثلاثة", text:"Allah sent Muhammad ﷺ as a mercy to all people."},
+        {src:"الأصول الثلاثة", text:"The Prophet ﷺ migrated from Makkah to Madinah."},
+        {src:"الفاتحة", text:"The Companions memorized Surah Al-Fatiha in the first days of Islam."},
+        {src:"الفاتحة", text:"The Prophet ﷺ taught his Companions the meaning of every verse."},
+        {src:"الفاتحة", text:"Early Muslims recited Al-Fatiha in every prayer, just as we do today."},
+        {src:"آية قرآنية ٥١:٥٦", text:"\"I did not create jinn and mankind except that they should worship Me.\""}
+      ],
+      fill:[
+        {p:"A stranger ___ (appear) before the Prophet ﷺ.", a:["appeared"]},
+        {p:"The man ___ (ask) about Islam, Iman, and Ihsan.", a:["asked"]},
+        {p:"Allah ___ (create) the heavens and the earth.", a:["created"]},
+        {p:"The Prophet ﷺ ___ (not / refuse) to answer any question.", a:["didn't refuse","did not refuse"]},
+        {p:"___ the Companions ___ (recognize) the stranger at first?", a:["did the companions recognize"]},
+        {p:"Muhammad ﷺ ___ (migrate) from Makkah to Madinah.", a:["migrated"]}
+      ],
+      mcq:[
+        {q:"The man ___ before the Prophet ﷺ.", opts:["appears","appeared","appear"], correct:1},
+        {q:"Allah ___ the heavens and the earth.", opts:["creates","create","created"], correct:2},
+        {q:"___ the Prophet ﷺ answer every question?", opts:["Does","Did","Do"], correct:1},
+        {q:"The Companions ___ every word carefully.", opts:["listened","listens","are listening"], correct:0},
+        {q:"He ___ his work yesterday.", opts:["isn't finishing","doesn't finish","didn't finish"], correct:2},
+        {q:"Early Muslims ___ Al-Fatiha in every prayer.", opts:["recites","recited","recite"], correct:1}
+      ],
+      reveal:[
+        {wrong:"He didn't went to Madinah.", right:"He didn't go to Madinah."},
+        {wrong:"Allah create the heavens.", right:"Allah created the heavens."},
+        {wrong:"جاء رجل غريب إلى النبي ﷺ.", right:"A stranger came to the Prophet ﷺ.", translate:true},
+        {wrong:"هاجر النبي من مكة إلى المدينة.", right:"The Prophet ﷺ migrated from Makkah to Madinah.", translate:true}
+      ]
+    },
+    {
+      id:"t4", n:4, key:"past-continuous",
+      nameAr:"الماضي المستمر", nameEn:"Past Continuous",
+      tagline:"فعل كان في مجراه في لحظة محددة من الماضي",
+      timelineKind:"past-duration",
+      timelineCaption:"فعل طويل كان مستمرًا في الماضي (المنطقة المظلَّلة)، وفعل آخر أقصر قطعه في منتصفه (النقطة).",
+      accent:"#6b32b8", accentSoft:"#e9defa", accentSoftDark:"#2a1a3d",
+      usageHtml:
+        "<p>الصياغة: <span class=\"en\">was/were</span> + الفعل<span class=\"en\">+ing</span>.</p>"+
+        "<div class=\"form-grid\">"+
+        "<div class=\"form-item\"><b>مثبت</b><span class=\"en\">They were sitting.</span></div>"+
+        "<div class=\"form-item\"><b>منفي</b><span class=\"en\">I wasn't sleeping.</span></div>"+
+        "<div class=\"form-item\"><b>سؤال</b><span class=\"en\">Were you studying?</span></div>"+
+        "<div class=\"form-item\"><b>علامات زمنية</b><span class=\"en\">while, when, at 9 p.m. yesterday</span></div>"+
+        "</div>"+
+        "<p><b>يُستخدم من أجل:</b> فعل في مجراه عند لحظة محددة في الماضي، أو فعلٌ طويل (مستمر) قاطعه فعلٌ قصير (بسيط) — الأشهر: <span class=\"en\">while + مستمر</span>، ثم فعل بسيط قصير قاطعه.</p>"+
+        "<p>مثال القاعدة: <span class=\"en\">While the imam <b>was reciting</b>, the phone <b>rang</b>.</span> (الاستمرار الطويل مستمر، والمقاطعة القصيرة بسيط)</p>"+
+        "<ul class=\"tight mistakes\"><li><span class=\"en wrong\">I was sleep when you called.</span> ← <span class=\"en right\">I was sleeping when you called.</span></li></ul>",
+      daily:[
+        "I was sleeping when the phone rang.",
+        "She was cooking dinner when I arrived.",
+        "We were studying when the electricity went out.",
+        "While he was driving, he was listening to the Quran.",
+        "They were waiting for the bus at 7 o'clock.",
+        "I wasn't watching TV last night; I was reading.",
+        "What were you doing at 9 p.m. yesterday?",
+        "The children were playing when it started to rain."
+      ],
+      sourced:[
+        {src:"حديث جبريل", text:"The Companions were sitting with the Messenger of Allah ﷺ when a stranger suddenly appeared."},
+        {src:"حديث جبريل", text:"While the man was asking his questions, the Companions were listening in silence."},
+        {src:"حديث جبريل", text:"The Prophet ﷺ was explaining Ihsan when the man asked about the Hour."},
+        {src:"الأصول الثلاثة", text:"Before Islam, many Arabs were worshipping idols beside Allah."},
+        {src:"الأصول الثلاثة", text:"While the Prophet ﷺ was calling people to Tawheed, his enemies were opposing him."},
+        {src:"الأصول الثلاثة", text:"The early Muslims were facing hardship while they were holding firmly to their faith."},
+        {src:"الفاتحة", text:"While the imam was reciting Al-Fatiha, the congregation was listening in silence."},
+        {src:"الفاتحة", text:"The child was learning Al-Fatiha by heart when his father walked in."},
+        {src:"الفاتحة", text:"We were reciting the surah together when the adhan began."}
+      ],
+      fill:[
+        {p:"The Companions ___ (sit) with the Prophet ﷺ when the stranger appeared.", a:["were sitting"]},
+        {p:"While the man ___ (ask) questions, everyone ___ (listen).", a:["was asking / was listening"]},
+        {p:"Many Arabs ___ (worship) idols before Islam.", a:["were worshipping","were worshiping"]},
+        {p:"___ you ___ (study) at 9 last night?", a:["were you studying"]},
+        {p:"The imam ___ (recite) Al-Fatiha when my phone rang.", a:["was reciting"]},
+        {p:"I ___ (not / sleep) when you called; I ___ (read).", a:["wasn't sleeping / was reading","was not sleeping / was reading"]}
+      ],
+      mcq:[
+        {q:"The Companions ___ with the Prophet ﷺ when the man appeared.", opts:["sit","sat","were sitting"], correct:2},
+        {q:"While he ___, he was listening to the Quran.", opts:["was driving","drove","drives"], correct:0},
+        {q:"___ they praying at that moment?", opts:["Did","Was","Were"], correct:2},
+        {q:"Before Islam, many people ___ idols.", opts:["worship","were worshipping","worshipped"], correct:1},
+        {q:"The imam ___ Al-Fatiha when my phone rang.", opts:["recites","was reciting","recited"], correct:1},
+        {q:"What ___ you doing at 9 p.m.?", opts:["did","were","was"], correct:1}
+      ],
+      reveal:[
+        {wrong:"I was sleep when you called.", right:"I was sleeping when you called."},
+        {wrong:"While he drove, he listened to Quran.", right:"While he was driving, he was listening to the Quran."},
+        {wrong:"كانوا يجلسون مع النبي ﷺ حين ظهر الرجل.", right:"They were sitting with the Prophet ﷺ when the man appeared.", translate:true},
+        {wrong:"كنت أقرأ حين اتصلت.", right:"I was reading when you called.", translate:true}
+      ]
+    },
+    {
+      id:"t5", n:5, key:"future-simple",
+      nameAr:"المستقبل البسيط", nameEn:"Future Simple",
+      tagline:"وعد، تنبؤ، أو قرار لحظي بشأن المستقبل",
+      timelineKind:"future-point",
+      timelineCaption:"لحظة واحدة محددة ستحدث في المستقبل، بعد الآن.",
+      accent:"#1657c9", accentSoft:"#dbe6fb", accentSoftDark:"#152a4d",
+      usageHtml:
+        "<p>الصياغة: <span class=\"en\">will</span> + الفعل المجرد (لا يتغيّر مع أي فاعل).</p>"+
+        "<div class=\"form-grid\">"+
+        "<div class=\"form-item\"><b>مثبت</b><span class=\"en\">She will finish tonight.</span></div>"+
+        "<div class=\"form-item\"><b>منفي</b><span class=\"en\">We won't be late.</span></div>"+
+        "<div class=\"form-item\"><b>سؤال</b><span class=\"en\">Will you help me?</span></div>"+
+        "<div class=\"form-item\"><b>علامات زمنية</b><span class=\"en\">tomorrow, next year, soon, I think, I promise</span></div>"+
+        "</div>"+
+        "<p><b>يُستخدم من أجل:</b> التنبؤات، الوعود، القرارات اللحظية، وحقائق ستقع في المستقبل — ومنها ما ورد في وعد الآخرة.</p>"+
+        "<ul class=\"tight mistakes\"><li><span class=\"en wrong\">I will to call you.</span> ← <span class=\"en right\">I will call you.</span> (لا تأتي <span class=\"en\">to</span> بعد <span class=\"en\">will</span>)</li></ul>",
+      daily:[
+        "I will call you tomorrow.",
+        "She will finish her homework tonight.",
+        "We won't be late for class.",
+        "Will you help me with this exercise?",
+        "It will rain tomorrow, I think.",
+        "My brother will graduate next year.",
+        "I promise I will study harder.",
+        "The exam will start at nine o'clock."
+      ],
+      sourced:[
+        {src:"الأصول الثلاثة", text:"On the Day of Judgment, Allah will ask every person about their deeds."},
+        {src:"الأصول الثلاثة", text:"Every soul will return to Allah."},
+        {src:"الأصول الثلاثة", text:"The Prophet ﷺ will intercede for his nation on the Day of Judgment."},
+        {src:"حديث جبريل", text:"The Hadith of Jibril says that a poor shepherd will become rich."},
+        {src:"حديث جبريل", text:"People will compete in building tall structures."},
+        {src:"حديث جبريل", text:"Only Allah will know exactly when the Hour will come."},
+        {src:"الفاتحة", text:"On the Day of Judgment, Allah alone will be the Master."},
+        {src:"الفاتحة", text:"Sincere worshippers will follow the Straight Path."},
+        {src:"الفاتحة", text:"We will recite this surah in every prayer for the rest of our lives."},
+        {src:"آية قرآنية ١٥:٤٥", text:"\"Indeed, the righteous will be within gardens and springs.\""}
+      ],
+      fill:[
+        {p:"Allah ___ (ask) every person about their deeds.", a:["will ask"]},
+        {p:"Every soul ___ (return) to Allah.", a:["will return"]},
+        {p:"___ you ___ (finish) this course this month?", a:["will you finish"]},
+        {p:"It ___ (not / be) easy, but it ___ (be) worth it.", a:["won't be / will be","will not be / will be"]},
+        {p:"The Prophet ﷺ ___ (intercede) for his nation.", a:["will intercede"]},
+        {p:"I ___ (recite) this surah every day, in shā' Allah.", a:["will recite"]}
+      ],
+      mcq:[
+        {q:"Allah ___ every person on the Day of Judgment.", opts:["asks","will ask","asked"], correct:1},
+        {q:"___ you help me tomorrow?", opts:["Are","Do","Will"], correct:2},
+        {q:"Every soul ___ to Allah.", opts:["returned","returns","will return"], correct:2},
+        {q:"It ___ rain tomorrow, I think.", opts:["will","is","does"], correct:0},
+        {q:"Only Allah ___ exactly when the Hour will come.", opts:["knows","will know","knew"], correct:1},
+        {q:"The exam ___ at nine o'clock.", opts:["starts","started","will start"], correct:2}
+      ],
+      reveal:[
+        {wrong:"I will to call you.", right:"I will call you."},
+        {wrong:"She wills finish tomorrow.", right:"She will finish tomorrow."},
+        {wrong:"سيسأل الله كل إنسان عن عمله.", right:"Allah will ask every person about their deeds.", translate:true},
+        {wrong:"سأقرأ هذه السورة كل يوم.", right:"I will recite this surah every day.", translate:true}
+      ]
+    },
+    {
+      id:"t6", n:6, key:"future-continuous",
+      nameAr:"المستقبل المستمر", nameEn:"Future Continuous",
+      tagline:"فعل سيكون في مجراه في لحظة محددة مستقبلًا",
+      timelineKind:"future-duration",
+      timelineCaption:"فعل سيكون في مُنتصف حدوثه (المنطقة المظلَّلة) عند لحظة محددة من المستقبل (النقطة).",
+      accent:"#1f7a3d", accentSoft:"#dcefe1", accentSoftDark:"#173a24",
+      usageHtml:
+        "<p>الصياغة: <span class=\"en\">will be</span> + الفعل<span class=\"en\">+ing</span>.</p>"+
+        "<div class=\"form-grid\">"+
+        "<div class=\"form-item\"><b>مثبت</b><span class=\"en\">I will be sitting.</span></div>"+
+        "<div class=\"form-item\"><b>منفي</b><span class=\"en\">He won't be traveling.</span></div>"+
+        "<div class=\"form-item\"><b>سؤال</b><span class=\"en\">Will you be using the car?</span></div>"+
+        "<div class=\"form-item\"><b>علامات زمنية</b><span class=\"en\">this time tomorrow, at 8 p.m. tonight, next week</span></div>"+
+        "</div>"+
+        "<p><b>يُستخدم من أجل:</b> فعل سيكون في مجراه عند لحظة محددة في المستقبل — تمامًا كما يصف الماضي المستمر لحظة ماضية، يصف هذا الزمن لحظة مستقبلية.</p>"+
+        "<ul class=\"tight mistakes\"><li><span class=\"en wrong\">I will sitting in the hall.</span> ← <span class=\"en right\">I will be sitting in the hall.</span> (لا تُسقطي <span class=\"en\">be</span>)</li></ul>",
+      daily:[
+        "This time tomorrow, I will be sitting in the exam hall.",
+        "At 8 p.m. tonight, we will be having dinner.",
+        "Next week, she will be studying for her final exams.",
+        "Will you be using the car this evening?",
+        "This time next year, I will be working as a teacher, in shā' Allah.",
+        "He will be traveling when you arrive.",
+        "They will be waiting for us at the airport.",
+        "I will be reviewing this lesson again tomorrow."
+      ],
+      sourced:[
+        {src:"الفاتحة", text:"Tomorrow at Fajr time, Muslims all over the world will be reciting Surah Al-Fatiha in prayer."},
+        {src:"الفاتحة", text:"This time next year, students will still be reciting this surah in every prayer."},
+        {src:"الفاتحة", text:"During Ramadan nights, worshippers will be listening to Al-Fatiha in every unit of tarawih."},
+        {src:"الأصول الثلاثة", text:"Next week, we will be studying the second of the Three Fundamental Principles."},
+        {src:"الأصول الثلاثة", text:"On the Day of Judgment, people will be standing before Allah, waiting for their record."},
+        {src:"الأصول الثلاثة", text:"By the end of this course, you will be reviewing these three principles from memory."},
+        {src:"حديث جبريل", text:"By the end of this course, you will be understanding the story of Hadith Jibril in English."},
+        {src:"حديث جبريل", text:"Near the Hour, shepherds will be competing in building tall structures."},
+        {src:"حديث جبريل", text:"On that day, some hearts will be trembling while others will be at peace."}
+      ],
+      fill:[
+        {p:"This time tomorrow, I ___ (sit) in the exam hall.", a:["will be sitting"]},
+        {p:"Next week, we ___ (study) the second principle.", a:["will be studying"]},
+        {p:"___ you ___ (use) the car this evening?", a:["will you be using"]},
+        {p:"On that day, people ___ (stand) before Allah.", a:["will be standing"]},
+        {p:"By the end of this course, you ___ (review) these principles from memory.", a:["will be reviewing"]},
+        {p:"Tomorrow at Fajr, Muslims ___ (recite) Al-Fatiha together.", a:["will be reciting"]}
+      ],
+      mcq:[
+        {q:"This time tomorrow, I ___ in the exam hall.", opts:["sat","sit","will be sitting"], correct:2},
+        {q:"Next week, we ___ the second principle.", opts:["will be studying","study","studied"], correct:0},
+        {q:"___ you be using the car tonight?", opts:["Do","Are","Will"], correct:2},
+        {q:"On that day, people ___ before Allah.", opts:["stand","will stand","will be standing"], correct:2},
+        {q:"By the end of the course, you ___ this lesson from memory.", opts:["reviewed","will be reviewing","review"], correct:1},
+        {q:"At Fajr tomorrow, Muslims ___ Al-Fatiha together.", opts:["recited","will be reciting","recite"], correct:1}
+      ],
+      reveal:[
+        {wrong:"I will sitting in the exam hall.", right:"I will be sitting in the exam hall."},
+        {wrong:"Next week we studying the lesson.", right:"Next week, we will be studying the lesson."},
+        {wrong:"في هذا الوقت غدًا، سأكون جالسًا في قاعة الاختبار.", right:"This time tomorrow, I will be sitting in the exam hall.", translate:true},
+        {wrong:"الأسبوع القادم سندرس المبدأ الثاني.", right:"Next week, we will be studying the second principle.", translate:true}
+      ]
+    }
+  ];
+
+  var REVIEW = [
+    {q:"My father ___ to work every day.", opts:["is driving","drives","drove"], correct:1, tense:"المضارع البسيط"},
+    {q:"Look! It ___ now.", opts:["is raining","rains","rained"], correct:0, tense:"المضارع المستمر"},
+    {q:"A stranger ___ before the Prophet ﷺ one day.", opts:["appears","was appearing","appeared"], correct:2, tense:"الماضي البسيط"},
+    {q:"The Companions ___ with the Prophet ﷺ when the man appeared.", opts:["sit","were sitting","sat"], correct:1, tense:"الماضي المستمر"},
+    {q:"Allah ___ every person on the Day of Judgment.", opts:["asked","asks","will ask"], correct:2, tense:"المستقبل البسيط"},
+    {q:"This time tomorrow, I ___ in the exam hall.", opts:["will be sitting","sit","sat"], correct:0, tense:"المستقبل المستمر"},
+    {q:"Muslims ___ in one God, Allah.", opts:["believing","believe","believes"], correct:1, tense:"المضارع البسيط"},
+    {q:"Right now, we ___ about the Three Principles.", opts:["learned","learn","are learning"], correct:2, tense:"المضارع المستمر"},
+    {q:"The Prophet ﷺ ___ from Makkah to Madinah.", opts:["migrates","migrated","will migrate"], correct:1, tense:"الماضي البسيط"},
+    {q:"While the imam ___ Al-Fatiha, we ___ in silence.", opts:["recites / listen","was reciting / were listening","recited / listened"], correct:1, tense:"الماضي المستمر"},
+    {q:"Every soul ___ to Allah.", opts:["returned","returns","will return"], correct:2, tense:"المستقبل البسيط"},
+    {q:"Next week, we ___ the second principle.", opts:["studied","study","will be studying"], correct:2, tense:"المستقبل المستمر"}
+  ];
+
+  var ABOUT_TEXTS = [
+    {name:"سورة الفاتحة", body:"أعظم سورة في القرآن الكريم، وأمّ الكتاب — يقرؤها كل مسلم في كل ركعة من صلاته، سبع آيات تجمع الثناء على الله وتوحيده وطلب الهداية."},
+    {name:"حديث جبريل", body:"حديث عظيم رواه عمر بن الخطاب رضي الله عنه في صحيح مسلم، يشرح فيه النبي ﷺ مراتب الدين الثلاث: الإسلام، والإيمان، والإحسان، ثم يذكر بعض علامات الساعة."},
+    {name:"متن الأصول الثلاثة", body:"رسالة مختصرة للشيخ محمد بن عبدالوهاب رحمه الله، يبيّن فيها للمسلم المبتدئ ثلاثة أصول يجب معرفتها: معرفة ربه، ومعرفة دينه، ومعرفة نبيه محمد ﷺ."}
+  ];
+
+  var TWELVE_TENSES = {
+    verb: "pray — يصلّي",
+    rows: [
+      {name:"البسيط", cells:["I prayed Fajr in the mosque.","I pray five times a day.","I will pray Dhuhr at the university."]},
+      {name:"المستمر", cells:["I was praying when he called.","I am praying right now.","I will be praying at that time tomorrow."]},
+      {name:"التام", cells:["I had prayed before you arrived.","I have already prayed Fajr.","I will have prayed by noon."]},
+      {name:"التام المستمر", cells:["I had been praying for an hour when you came.","I have been praying for ten minutes.","I will have been praying for an hour by then."]}
+    ]
+  };
+
+  var PILLARS = {
+    islam: ["الشهادة — Testimony: there is no god but Allah, and Muhammad is His Messenger.","الصلاة — Prayer: five times a day.","الزكاة — Zakat: given once a year.","الصوم — Fasting: during the month of Ramadan.","الحج — Hajj: once in a lifetime, if able."],
+    iman: ["الإيمان بالله — Belief in Allah.","الإيمان بالملائكة — Belief in the Angels.","الإيمان بالكتب — Belief in the Books.","الإيمان بالأنبياء والرسل — Belief in the Prophets and Messengers.","الإيمان باليوم الآخر — Belief in the Last Day.","الإيمان بالقدر — Belief in Divine Decree, its good and its bad."]
+  };
+
+  var GLOSSARY = [
+    ["Afterlife","الحياة بعد الموت"],["Angels","الملائكة"],["associate (shirk)","يُشرك"],
+    ["believe / Belief","يؤمن / إيمان"],["blessings","النِّعَم"],["Charity","صدقة"],
+    ["command / order","أمر"],["create / Creator","خلق / خالق"],["deeds","أعمال"],
+    ["Decree (Qadr)","القدر"],["Disbelieve","يكفر"],["Disobey / Obey","يعصي / يطيع"],
+    ["Divine","مقدَّس"],["dawn (Fajr)","الفجر"],["sunset (Maghrib)","المغرب"],
+    ["forbid / forbade","ينهى / نهى (ماضي)"],["guidance / guide","هداية - إرشاد / يرشد"],
+    ["Heaven / Hell","الجنة / النار"],["judgment","الحكم والقضاء"],
+    ["Know / Knowledge","تعرف / معرفة"],["mankind","البشر"],["manners","أخلاق"],
+    ["meaning","معنى"],["Messenger / Message","رسول / رسالة"],["peace","السلام - الأمن"],
+    ["principle","أصل (جمع: أصول)"],["Prophet / prophethood","نبي / النبوة"],
+    ["proof (daleel)","دليل"],["question","سؤال - يسأل"],["reveal / revealed","أنزل"],
+    ["send / sent","يرسل / أرسل"],["sincerely","بإخلاص"],["single out (tawhid)","يوحّد"],
+    ["Speak / Spoke","يتكلم / تكلّم (ماضي)"],["straight","مستقيم"],
+    ["Testimony (Shahadah)","شهادة"],["true / truthful","الحق - الحقيقي / صادق"],
+    ["trustworthy","مؤتَمن - أمين"],["will of Allah","مشيئة الله"],["worship","يعبد"]
+  ];
+
+  var USUL_QA = [
+    {q:"من ربك؟ — Who is your Lord?", a:"My Lord is Allah, who has nurtured me and nurtured all of creation with His blessings, and He is the only One I worship."},
+    {q:"ما دينك؟ — What is your religion?", a:"My religion is Islam: submission to Allah with Tawhid, obedience to Him, and freedom from shirk and its people — with three levels: Islam, Iman, and Ihsan."},
+    {q:"من نبيك؟ — Who is your Prophet?", a:"My Prophet is Muhammad ibn Abdullah ﷺ, the truthful and trustworthy, the last of the Messengers, sent by Allah to both jinn and mankind."}
+  ];
+
+  var FATIHA_TEXT = [
+    {ar:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", en:"In the name of Allah, the Most Gracious, the Most Merciful."},
+    {ar:"الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", en:"All praise belongs to Allah, Lord of all the worlds."},
+    {ar:"الرَّحْمَٰنِ الرَّحِيمِ", en:"The Most Gracious, the Most Merciful."},
+    {ar:"مَالِكِ يَوْمِ الدِّينِ", en:"Master of the Day of Judgment."},
+    {ar:"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", en:"You alone we worship, and You alone we ask for help."},
+    {ar:"اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", en:"Guide us to the straight path."},
+    {ar:"صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ", en:"The path of those You have blessed — not of those who earned Your anger, nor of those who went astray."}
+  ];
+
+  var JIBRIL_QA = [
+    {q:"Tell me about Islam.", a:"Islam is to testify that there is no god but Allah and that Muhammad is His Messenger, to establish prayer, to give zakat, to fast Ramadan, and to make pilgrimage to the House if you are able."},
+    {q:"Tell me about Iman (faith).", a:"Iman is to believe in Allah, His angels, His Books, His messengers, and the Last Day, and to believe in divine decree, its good and its bad."},
+    {q:"Tell me about Ihsan.", a:"Ihsan is to worship Allah as though you see Him — for even though you do not see Him, He surely sees you."}
+  ];
+
+  /* ============ STATE ============ */
+  var PKEY = "tenses-course-progress-v1";
+  function loadProgress(){
+    try{
+      var raw = localStorage.getItem(PKEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveProgress(p){
+    try{ localStorage.setItem(PKEY, JSON.stringify(p)); }catch(e){}
+  }
+  var progress = loadProgress();
+  var active = "intro";
+
+  function setLessonProgress(id, patch){
+    progress[id] = Object.assign({}, progress[id]||{}, patch);
+    saveProgress(progress);
+    renderNav();
+  }
+  function lessonComplete(id){
+    var p = progress[id];
+    if(!p) return false;
+    return !!p.fillChecked && !!p.mcqAnswered && !!p.revealDone;
+  }
+
+  /* ============ HELPERS ============ */
+  function el(tag, cls, html){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(html !== undefined) e.innerHTML = html;
+    return e;
+  }
+  function norm(s){
+    return s.toLowerCase().replace(/['’]/g,"'").replace(/\s+/g," ").trim();
+  }
+
+  /* ============ TIMELINE VISUALS ============ */
+  var TIMELINE_ARIA = {
+    "repeated": "خط زمني يمتد من الماضي إلى المستقبل مع نقاط متكررة على طوله، تمثّل عادة أو حقيقة ثابتة تتكرر دائمًا.",
+    "now-progress": "خط زمني عليه شريط مظلَّل حول نقطة الآن، يمثّل فعلًا يحدث في هذه اللحظة بالذات.",
+    "past-point": "خط زمني عليه نقطة واحدة قبل الآن في منطقة الماضي، تمثّل لحظة محددة انتهت.",
+    "past-duration": "خط زمني عليه شريط مظلَّل في منطقة الماضي وبداخله نقطة، يمثّل فعلًا طويلًا قطعه فعل أقصر.",
+    "future-point": "خط زمني عليه نقطة واحدة بعد الآن في منطقة المستقبل، تمثّل لحظة محددة ستحدث.",
+    "future-duration": "خط زمني عليه شريط مظلَّل في منطقة المستقبل وبداخله نقطة، يمثّل فعلًا سيكون في مُنتصف حدوثه."
+  };
+
+  function timelineSVG(kind){
+    var W = 640, H = 118, lineY = 56, x0 = 34, x1 = 606, nowX = 320;
+    var defs =
+      '<defs><marker id="tl-arrow-'+kind+'" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">'+
+      '<path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>';
+    var line =
+      '<line x1="'+x0+'" y1="'+lineY+'" x2="'+x1+'" y2="'+lineY+'" stroke="currentColor" stroke-width="2" marker-end="url(#tl-arrow-'+kind+')"/>';
+    var pastLabel = '<text x="'+x0+'" y="'+(lineY+30)+'" font-size="12" text-anchor="start" fill="currentColor" opacity="0.6">الماضي</text>';
+    var futureLabel = '<text x="'+(x1-10)+'" y="'+(lineY+30)+'" font-size="12" text-anchor="end" fill="currentColor" opacity="0.6">المستقبل</text>';
+    var nowTick = '<line x1="'+nowX+'" y1="'+(lineY-11)+'" x2="'+nowX+'" y2="'+(lineY+11)+'" stroke="currentColor" stroke-width="2" stroke-dasharray="3,3"/>';
+    var nowLabel = '<text x="'+nowX+'" y="'+(lineY+30)+'" font-size="12.5" text-anchor="middle" fill="var(--accent, currentColor)" font-weight="700">الآن</text>';
+
+    var accentFill = 'fill="var(--accent, currentColor)"';
+    var marks = "";
+    if(kind === "repeated"){
+      [x0+42, x0+130, nowX, x0+390, x1-42].forEach(function(mx){
+        marks += '<circle cx="'+mx+'" cy="'+lineY+'" r="5" '+accentFill+'/>';
+      });
+    } else if(kind === "now-progress"){
+      marks += '<rect x="'+(nowX-48)+'" y="'+(lineY-9)+'" width="96" height="18" rx="9" '+accentFill+' opacity="0.85"/>';
+      marks += '<circle cx="'+nowX+'" cy="'+lineY+'" r="4.5" fill="var(--surface,#fff)"/>';
+    } else if(kind === "past-point"){
+      marks += '<circle cx="150" cy="'+lineY+'" r="6" '+accentFill+'/>';
+    } else if(kind === "past-duration"){
+      marks += '<rect x="88" y="'+(lineY-9)+'" width="130" height="18" rx="9" '+accentFill+' opacity="0.5"/>';
+      marks += '<circle cx="198" cy="'+lineY+'" r="6" fill="currentColor"/>';
+    } else if(kind === "future-point"){
+      marks += '<circle cx="484" cy="'+lineY+'" r="6" '+accentFill+'/>';
+    } else if(kind === "future-duration"){
+      marks += '<rect x="418" y="'+(lineY-9)+'" width="130" height="18" rx="9" '+accentFill+' opacity="0.5"/>';
+      marks += '<circle cx="478" cy="'+lineY+'" r="6" fill="currentColor"/>';
+    }
+
+    return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+TIMELINE_ARIA[kind]+'">'+
+      defs + line + marks + nowTick + nowLabel + pastLabel + futureLabel + '</svg>';
+  }
+
+  function timelineFigure(t){
+    return '<figure class="timeline-fig">'+
+      timelineSVG(t.timelineKind)+
+      '<figcaption>'+t.timelineCaption+'</figcaption>'+
+      '</figure>';
+  }
+
+  /* ============ FLASHCARDS ============ */
+  function makeFlipCard(frontHtml, backHtml){
+    var card = el("div","flip-card");
+    card.setAttribute("tabindex","0");
+    card.setAttribute("role","button");
+    card.setAttribute("aria-label","بطاقة تعليمية، اضغطي لقلبها");
+    var inner = el("div","flip-card-inner");
+    inner.appendChild(el("div","flip-card-face flip-card-front", frontHtml));
+    inner.appendChild(el("div","flip-card-face flip-card-back", backHtml));
+    card.appendChild(inner);
+    function toggle(){ card.classList.toggle("flipped"); }
+    card.addEventListener("click", toggle);
+    card.addEventListener("keydown", function(e){
+      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
+    });
+    return card;
+  }
+
+  function renderFlipGrid(container, pairs){
+    var grid = el("div","flip-grid");
+    pairs.forEach(function(pair){
+      grid.appendChild(makeFlipCard(pair[0], pair[1]));
+    });
+    container.appendChild(grid);
+  }
+
+  /* ============ DRAG & DROP SENTENCE BUILDER ============ */
+  function shuffled(arr){
+    var a = arr.slice();
+    for(var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    // avoid an accidental already-correct order when possible
+    if(a.length > 1 && a.join(" ") === arr.join(" ")){
+      var t0 = a[0]; a[0] = a[1]; a[1] = t0;
+    }
+    return a;
+  }
+
+  var draggedChip = null;
+
+  function renderDragExercise(container, sentence, idx){
+    var words = sentence.replace(/["“”]/g,"").split(" ");
+    var item = el("div","drag-item");
+    item.innerHTML = "<div class=\"ex-prompt\"><span class=\"num\">"+(idx+1)+".</span> رتّبي الكلمات لتكوين جملة صحيحة (اسحبيها، أو اضغطي عليها بالترتيب):</div>";
+
+    var slots = el("div","drag-slots");
+    words.forEach(function(){
+      var slot = el("div","drag-slot");
+      slots.appendChild(slot);
+    });
+
+    var bank = el("div","drag-bank");
+
+    function placeInSlot(chip, slot){
+      if(slot.firstChild){
+        // slot occupied: swap its chip back to bank
+        var occupant = slot.firstChild;
+        slot.removeChild(occupant);
+        occupant.classList.remove("chip-in-slot");
+        bank.appendChild(occupant);
+      }
+      var parentSlot = chip.parentElement;
+      if(parentSlot && parentSlot.classList.contains("drag-slot")){
+        parentSlot.classList.remove("filled","correct","incorrect");
+      }
+      slot.appendChild(chip);
+      slot.classList.add("filled");
+      slot.classList.remove("correct","incorrect");
+    }
+
+    function returnToBank(chip){
+      var parentSlot = chip.parentElement;
+      if(parentSlot && parentSlot.classList.contains("drag-slot")){
+        parentSlot.classList.remove("filled","correct","incorrect");
+      }
+      bank.appendChild(chip);
+    }
+
+    function firstEmptySlot(){
+      var list = slots.querySelectorAll(".drag-slot");
+      for(var i = 0; i < list.length; i++){
+        if(!list[i].firstChild) return list[i];
+      }
+      return null;
+    }
+
+    function makeChip(word){
+      var chip = el("span","chip", word);
+      chip.setAttribute("draggable","true");
+      chip.addEventListener("dragstart", function(){ draggedChip = chip; });
+      chip.addEventListener("dragend", function(){ draggedChip = null; });
+      chip.addEventListener("click", function(){
+        if(chip.parentElement && chip.parentElement.classList.contains("drag-slot")){
+          returnToBank(chip);
+        } else {
+          var target = firstEmptySlot();
+          if(target) placeInSlot(chip, target);
+        }
+      });
+      return chip;
+    }
+
+    shuffled(words).forEach(function(word){
+      bank.appendChild(makeChip(word));
+    });
+
+    Array.prototype.forEach.call(slots.querySelectorAll(".drag-slot"), function(slot){
+      slot.addEventListener("dragover", function(e){ e.preventDefault(); });
+      slot.addEventListener("drop", function(e){
+        e.preventDefault();
+        if(draggedChip) placeInSlot(draggedChip, slot);
+      });
+    });
+    bank.addEventListener("dragover", function(e){ e.preventDefault(); });
+    bank.addEventListener("drop", function(e){
+      e.preventDefault();
+      if(draggedChip) returnToBank(draggedChip);
+    });
+
+    var actions = el("div","drag-actions");
+    var checkBtn = el("button","btn ghost","تحقّقي من الترتيب");
+    var msg = el("span","score-line","");
+    actions.appendChild(checkBtn);
+    actions.appendChild(msg);
+
+    checkBtn.addEventListener("click", function(){
+      var slotEls = slots.querySelectorAll(".drag-slot");
+      var filled = 0, correct = 0;
+      Array.prototype.forEach.call(slotEls, function(slot, i){
+        slot.classList.remove("correct","incorrect");
+        var chip = slot.firstChild;
+        if(!chip) return;
+        filled++;
+        if(chip.textContent === words[i]){
+          slot.classList.add("correct");
+          correct++;
+        } else {
+          slot.classList.add("incorrect");
+        }
+      });
+      if(filled < words.length){
+        msg.textContent = "أكملي كل الكلمات أولاً.";
+      } else if(correct === words.length){
+        msg.textContent = "صحيحة تمامًا! ✓";
+      } else {
+        msg.textContent = "راجعي الكلمات الملوّنة بالأحمر — "+correct+" / "+words.length+" صحيحة.";
+      }
+    });
+
+    item.appendChild(slots);
+    item.appendChild(bank);
+    item.appendChild(actions);
+    container.appendChild(item);
+  }
+
+  /* ============ DRAG & DROP CATEGORIZE (sort sentence into its tense) ============ */
+  function renderCategorizeExercise(container, items){
+    var wrap = el("div","");
+    var bank = el("div","cat-bank");
+    var zonesWrap = el("div","cat-zones");
+    var zoneEls = {};
+
+    TENSES.forEach(function(t){
+      var zone = el("div","cat-zone");
+      zone.appendChild(el("div","zone-label", t.n+". "+t.nameAr));
+      zoneEls[t.id] = zone;
+      zonesWrap.appendChild(zone);
+    });
+
+    function firstEmptyZone(){
+      var found = null;
+      Object.keys(zoneEls).some(function(id){
+        if(!zoneEls[id].querySelector(".cat-chip")){ found = zoneEls[id]; return true; }
+        return false;
+      });
+      return found;
+    }
+
+    function placeChipInZone(chip, zone){
+      var existing = zone.querySelector(".cat-chip");
+      if(existing){
+        existing.classList.remove("chip-in-zone");
+        bank.appendChild(existing);
+      }
+      var prevZone = chip.parentElement;
+      if(prevZone && prevZone.classList.contains("cat-zone")){
+        prevZone.classList.remove("filled","correct","incorrect");
+      }
+      zone.appendChild(chip);
+      zone.classList.add("filled");
+      zone.classList.remove("correct","incorrect");
+    }
+
+    function makeCatChip(item){
+      var chip = el("span","cat-chip", "<span class=\"en\">"+item.text+"</span>");
+      chip.dataset.tenseId = item.tenseId;
+      chip.setAttribute("draggable","true");
+      chip.addEventListener("dragstart", function(){ draggedChip = chip; });
+      chip.addEventListener("dragend", function(){ draggedChip = null; });
+      chip.addEventListener("click", function(){
+        if(chip.parentElement && chip.parentElement.classList.contains("cat-zone")){
+          chip.parentElement.classList.remove("filled","correct","incorrect");
+          bank.appendChild(chip);
+        } else {
+          var target = firstEmptyZone();
+          if(target) placeChipInZone(chip, target);
+        }
+      });
+      return chip;
+    }
+
+    shuffled(items).forEach(function(item){ bank.appendChild(makeCatChip(item)); });
+
+    Object.keys(zoneEls).forEach(function(id){
+      var zone = zoneEls[id];
+      zone.addEventListener("dragover", function(e){ e.preventDefault(); });
+      zone.addEventListener("drop", function(e){
+        e.preventDefault();
+        if(draggedChip) placeChipInZone(draggedChip, zone);
+      });
+    });
+    bank.addEventListener("dragover", function(e){ e.preventDefault(); });
+    bank.addEventListener("drop", function(e){
+      e.preventDefault();
+      if(draggedChip){
+        var prevZone = draggedChip.parentElement;
+        if(prevZone && prevZone.classList.contains("cat-zone")) prevZone.classList.remove("filled","correct","incorrect");
+        bank.appendChild(draggedChip);
+      }
+    });
+
+    var actions = el("div","drag-actions");
+    var checkBtn = el("button","btn ghost","تحقّقي من التصنيف");
+    var msg = el("span","score-line","");
+    actions.appendChild(checkBtn);
+    actions.appendChild(msg);
+
+    checkBtn.addEventListener("click", function(){
+      var filled = 0, correct = 0;
+      Object.keys(zoneEls).forEach(function(id){
+        var zone = zoneEls[id];
+        zone.classList.remove("correct","incorrect");
+        var chip = zone.querySelector(".cat-chip");
+        if(!chip) return;
+        filled++;
+        if(chip.dataset.tenseId === id){ zone.classList.add("correct"); correct++; }
+        else zone.classList.add("incorrect");
+      });
+      if(filled < items.length){
+        msg.textContent = "صنّفي كل الجمل أولاً.";
+      } else if(correct === items.length){
+        msg.textContent = "ممتازة! صنّفتِ كل الجمل بشكل صحيح. ✓";
+      } else {
+        msg.textContent = "راجعي المناطق الملوّنة بالأحمر — "+correct+" / "+items.length+" صحيحة.";
+      }
+    });
+
+    wrap.appendChild(bank);
+    wrap.appendChild(zonesWrap);
+    wrap.appendChild(actions);
+    container.appendChild(wrap);
+  }
+
+  /* ============ DRAG & DROP EXERCISES PAGE ============ */
+  function renderDragPage(container){
+    container.appendChild(el("h1","","🧩 تدريبات السحب والإفلات"));
+    container.appendChild(el("p","lede","تدريبان تفاعليان يجمعان الأزمنة الستة معًا — اسحبي بالفأرة، أو اضغطي بالترتيب الصحيح (يعمل على الجوال أيضًا)."));
+
+    var part1 = el("div","card");
+    part1.appendChild(el("h3","١) رتّبي الكلمات لتكوين جملة صحيحة"));
+    part1.appendChild(el("p","flip-hint","اسحبي كل كلمة إلى مكانها في الجملة، أو اضغطي عليها بالترتيب من اليسار إلى اليمين."));
+    var idx = 0;
+    TENSES.forEach(function(t){
+      t.daily.slice(3,5).forEach(function(s){
+        var tag = el("p","", "<span class=\"src-tag\">"+t.n+". "+t.nameAr+"</span>");
+        tag.style.marginBottom = "4px";
+        part1.appendChild(tag);
+        renderDragExercise(part1, s, idx);
+        idx++;
+      });
+    });
+    container.appendChild(part1);
+
+    var part2 = el("div","card");
+    part2.appendChild(el("h3","٢) صنّفي كل جملة إلى زمنها الصحيح"));
+    part2.appendChild(el("p","flip-hint","اسحبي كل جملة (أو اضغطي عليها) إلى المربّع المكتوب عليه اسم الزمن المناسب لها، ثم اضغطي «تحقّقي من التصنيف»."));
+    var catItems = TENSES.map(function(t){
+      return {text: t.daily[5], tenseId: t.id};
+    });
+    renderCategorizeExercise(part2, catItems);
+    container.appendChild(part2);
+  }
+
+  /* ============ NAV ============ */
+  function renderNav(){
+    var nav = document.getElementById("nav");
+    nav.innerHTML = "";
+    nav.appendChild(el("div","brand","الأزمنة الستة"));
+    nav.appendChild(el("div","brand-sub","دورة تفاعلية للدراسة الذاتية — الحياة اليومية، والفاتحة، وحديث جبريل، والأصول الثلاثة"));
+
+    function makeBtn(id, label, dotColor){
+      var b = el("button","nav-btn"+(active===id?" active":""));
+      if(dotColor){ b.style.setProperty("--accent", dotColor.a); b.style.setProperty("--accent-soft", dotColor.s); }
+      var dot = el("span","nav-dot");
+      var txt = el("span","", label);
+      b.appendChild(dot); b.appendChild(txt);
+      if(lessonComplete(id)){ b.appendChild(el("span","nav-check","✓")); }
+      b.addEventListener("click", function(){ active = id; render(); window.scrollTo({top:0,behavior:"smooth"}); });
+      nav.appendChild(b);
+    }
+
+    makeBtn("intro","الصفحة الرئيسية", null);
+    TENSES.forEach(function(t){
+      makeBtn(t.id, t.n+". "+t.nameAr, {a:t.accent, s:t.accentSoft});
+    });
+    makeBtn("review","🎯 اختبار شامل", {a:"#4a3728", s:"#eee3d3"});
+    makeBtn("glossary","📚 قاموس المصطلحات", {a:"#4a3728", s:"#eee3d3"});
+    makeBtn("dragpage","🧩 تدريبات السحب والإفلات", {a:"#4a3728", s:"#eee3d3"});
+
+    var done = TENSES.filter(function(t){ return lessonComplete(t.id); }).length;
+    var box = el("div","nav-progress");
+    box.appendChild(el("div","", "تقدّمك: "+done+" / "+TENSES.length+" دروس"));
+    var bar = el("div","nav-progress-bar");
+    var fill = el("div","nav-progress-fill");
+    fill.style.width = Math.round(done/TENSES.length*100)+"%";
+    bar.appendChild(fill);
+    box.appendChild(bar);
+    nav.appendChild(box);
+  }
+
+  /* ============ RENDER: INTRO ============ */
+  function renderIntro(container){
+    container.appendChild(el("h1","","دورة الأزمنة الإنجليزية الستة"));
+    container.appendChild(el("p","lede","دورة تفاعلية ذاتية التصحيح، تشرح الأزمنة الستة الأساسية في اللغة الإنجليزية، وتدعم كل درس بأمثلة من الحياة اليومية، ومن سورة الفاتحة، وحديث جبريل، ومتن الأصول الثلاثة — مع تدريبات تُصحَّح فور الإجابة عليها."));
+
+    var howCard = el("div","card");
+    howCard.appendChild(el("h3","كيف تدرسين بنفسك؟"));
+    var steps = el("ol","steps");
+    [
+      "اختاري الدرس من القائمة الجانبية (تبدأ بالمضارع البسيط وتنتهي بالمستقبل المستمر).",
+      "اقرئي شرح الاستخدام والصياغة أولًا، وانتبهي لقسم «الأخطاء الشائعة».",
+      "تأملي الأمثلة: من الحياة اليومية، ثم من النصوص الثلاثة، ولاحظي وسم المصدر بجانب كل جملة.",
+      "أدّي التدريبات الثلاثة في كل درس: أكملي الفراغ، ثم اختاري الإجابة الصحيحة، ثم صحّحي الجملة الخاطئة أو ترجمي — وستظهر لك إشارة ✓ عند إتمام الدرس في القائمة الجانبية.",
+      "أنهي الدورة باختبار المراجعة الشامل الذي يجمع الأزمنة الستة معًا."
+    ].forEach(function(s,i){
+      var li = document.createElement("li");
+      li.innerHTML = "<span class=\"step-n\">"+(i+1)+"</span><span>"+s+"</span>";
+      steps.appendChild(li);
+    });
+    howCard.appendChild(steps);
+    container.appendChild(howCard);
+
+    var aboutCard = el("div","card");
+    aboutCard.appendChild(el("h3","عن النصوص الثلاثة"));
+    var grid = el("div","about-grid");
+    ABOUT_TEXTS.forEach(function(a){
+      var c = el("div","about-card");
+      c.appendChild(el("h4","", a.name));
+      c.appendChild(el("p","", a.body));
+      grid.appendChild(c);
+    });
+    aboutCard.appendChild(grid);
+    container.appendChild(aboutCard);
+
+    var textsCard = el("div","card");
+    textsCard.appendChild(el("h3","نصوص المصادر (بترجمة ميسّرة للدارسة)"));
+    textsCard.appendChild(el("p","lede","النص الكامل للفاتحة ولبِ حديث جبريل، بترجمة إنجليزية مبسّطة تلائم مستوى الدورة — ارجعي إليها كلما احتجتِ سياق الأمثلة أعلاه."));
+
+    var fatihaBlock = el("div","");
+    fatihaBlock.appendChild(el("h4","", "سورة الفاتحة"));
+    var fList = document.createElement("ol");
+    fList.className = "tight";
+    FATIHA_TEXT.forEach(function(v){
+      var li = document.createElement("li");
+      li.innerHTML = "<span class=\"ar-src\">"+v.ar+"</span><span class=\"en\">"+v.en+"</span>";
+      fList.appendChild(li);
+    });
+    fatihaBlock.appendChild(fList);
+    textsCard.appendChild(fatihaBlock);
+
+    var jibrilBlock = el("div","");
+    jibrilBlock.style.marginTop = "18px";
+    jibrilBlock.appendChild(el("h4","", "حديث جبريل — الأسئلة الثلاثة الكبرى"));
+    var jList = el("div","ex-list");
+    jList.style.flexDirection = "column";
+    JIBRIL_QA.forEach(function(item){
+      var li = document.createElement("li");
+      li.style.flexDirection = "column";
+      li.style.alignItems = "flex-start";
+      li.innerHTML = "<b>"+item.q+"</b><span class=\"ex-en en\">"+item.a+"</span>";
+      jList.appendChild(li);
+    });
+    jibrilBlock.appendChild(jList);
+    textsCard.appendChild(jibrilBlock);
+    container.appendChild(textsCard);
+
+    var usulCard = el("div","card");
+    usulCard.appendChild(el("h3","الأصول الثلاثة — الأسئلة الثلاثة"));
+    usulCard.appendChild(el("p","lede","كل مسلم يُسأل عن هذه الأصول الثلاثة — هنا إجاباتها بصيغة المضارع البسيط، وهي مصدر ممتاز لأمثلة هذا الزمن."));
+    var qaList = el("div","ex-list");
+    qaList.style.flexDirection = "column";
+    USUL_QA.forEach(function(item){
+      var li = document.createElement("li");
+      li.style.flexDirection = "column";
+      li.style.alignItems = "flex-start";
+      li.innerHTML = "<b>"+item.q+"</b><span class=\"ex-en en\">"+item.a+"</span>";
+      qaList.appendChild(li);
+    });
+    usulCard.appendChild(qaList);
+    container.appendChild(usulCard);
+
+    var pillarsCard = el("div","card");
+    pillarsCard.appendChild(el("h3","أركان الإسلام وأركان الإيمان — مرجع سريع"));
+    var pGrid = el("div","form-grid");
+    var pIslam = el("div","form-item");
+    pIslam.innerHTML = "<b>أركان الإسلام الخمسة</b>"+PILLARS.islam.map(function(x){return "<div class=\"en\" style=\"margin-top:4px\">"+x+"</div>";}).join("");
+    var pIman = el("div","form-item");
+    pIman.innerHTML = "<b>أركان الإيمان الستة</b>"+PILLARS.iman.map(function(x){return "<div class=\"en\" style=\"margin-top:4px\">"+x+"</div>";}).join("");
+    pGrid.appendChild(pIslam);
+    pGrid.appendChild(pIman);
+    pillarsCard.appendChild(pGrid);
+    container.appendChild(pillarsCard);
+
+    var gridCard = el("div","card");
+    gridCard.appendChild(el("h3","خريطة الأزمنة الاثني عشر في الإنجليزية"));
+    gridCard.appendChild(el("p","lede","الأزمنة الستة التي تدرسينها في هذه الدورة (البسيط والمستمر) هي نصف الصورة فقط — وهذا الجدول يضعها في سياق الاثني عشر زمنًا كاملة، بفعل واحد: "+"<span class=\"en\">"+TWELVE_TENSES.verb+"</span>."));
+    var tenseTable = document.createElement("table");
+    var thead = "<tr><th></th><th>الماضي</th><th>المضارع</th><th>المستقبل</th></tr>";
+    var tbody = TWELVE_TENSES.rows.map(function(row){
+      return "<tr><th>"+row.name+"</th>"+row.cells.map(function(c){return "<td class=\"en\">"+c+"</td>";}).join("")+"</tr>";
+    }).join("");
+    tenseTable.innerHTML = thead+tbody;
+    gridCard.appendChild(tenseTable);
+    gridCard.appendChild(el("p","lede","الملوّنة بالخلفية في القائمة الجانبية هي الأزمنة الستة الأساسية (البسيط والمستمر) التي تغطيها هذه الدورة بالتفصيل."));
+    container.appendChild(gridCard);
+
+    var legendCard = el("div","card");
+    legendCard.appendChild(el("h3","خريطة الدروس"));
+    var legend = el("div","legend");
+    TENSES.forEach(function(t){
+      var chip = el("div","legend-chip");
+      var dot = el("span","legend-dot"); dot.style.background = t.accent;
+      chip.appendChild(dot);
+      chip.appendChild(el("span","", t.n+". "+t.nameAr+" — "+t.tagline));
+      chip.addEventListener("click", function(){ active = t.id; render(); window.scrollTo({top:0,behavior:"smooth"}); });
+      chip.style.cursor = "pointer";
+      legend.appendChild(chip);
+    });
+    legendCard.appendChild(legend);
+    container.appendChild(legendCard);
+  }
+
+  /* ============ RENDER: LESSON ============ */
+  function renderLesson(container, t){
+    container.style.setProperty("--accent", t.accent);
+    container.style.setProperty("--accent-soft", t.accentSoft);
+
+    var head = el("div","lesson-head");
+    var left = el("div");
+    left.appendChild(el("div","lesson-num","LESSON "+t.n+" / "+TENSES.length));
+    left.appendChild(el("h1","", t.nameAr+" <span class=\"en-title\">— "+t.nameEn+"</span>"));
+    left.appendChild(el("p","lede", t.tagline));
+    head.appendChild(left);
+    container.appendChild(head);
+
+    var usageCard = el("div","card");
+    usageCard.appendChild(el("h3","الشرح والصياغة"));
+    usageCard.appendChild(el("div","", t.usageHtml));
+    container.appendChild(usageCard);
+
+    if(t.timelineKind){
+      var visCard = el("div","card");
+      visCard.appendChild(el("h3","🕒 التصوّر الزمني"));
+      visCard.appendChild(el("div","", timelineFigure(t)));
+      container.appendChild(visCard);
+    }
+
+    var exCard = el("div","card");
+    exCard.appendChild(el("h3","أمثلة"));
+
+    var g1 = el("div","ex-group");
+    g1.appendChild(el("h4","🏠 من الحياة اليومية"));
+    var l1 = el("ul","ex-list");
+    t.daily.forEach(function(s){
+      var li = document.createElement("li");
+      li.innerHTML = "<span class=\"ex-en en\">"+s+"</span>";
+      l1.appendChild(li);
+    });
+    g1.appendChild(l1);
+    exCard.appendChild(g1);
+
+    var g2 = el("div","ex-group");
+    g2.appendChild(el("h4","📖 من النصوص الشرعية"));
+    var l2 = el("ul","ex-list");
+    t.sourced.forEach(function(s){
+      var li = document.createElement("li");
+      li.innerHTML = "<span class=\"src-tag\">"+s.src+"</span><span class=\"ex-en en\">"+s.text+"</span>";
+      l2.appendChild(li);
+    });
+    g2.appendChild(l2);
+    exCard.appendChild(g2);
+    container.appendChild(exCard);
+
+    var fcCard = el("div","card");
+    fcCard.appendChild(el("h3","🗂️ بطاقات المراجعة السريعة"));
+    fcCard.appendChild(el("p","flip-hint","اضغطي على البطاقة لقلبها ومعرفة الإجابة."));
+    renderFlipGrid(fcCard, t.fill.map(function(item){
+      return ["<span class=\"en\">"+item.p+"</span>", "<span class=\"en\">"+item.a.join(" / ")+"</span>"];
+    }));
+    container.appendChild(fcCard);
+
+    var drillCard = el("div","card");
+    drillCard.appendChild(el("h3","تدريبات ذاتية التصحيح"));
+
+    /* --- Fill in the blank --- */
+    var set1 = el("div","exercise-set");
+    set1.appendChild(el("h4","", "١) أكملي الفراغ بالصيغة الصحيحة"));
+    var inputs = [];
+    t.fill.forEach(function(item, idx){
+      var wrap = el("div","ex-item");
+      var promptText = item.p.replace("___", "<input type=\"text\" class=\"blank\" data-idx=\""+idx+"\" autocomplete=\"off\" spellcheck=\"false\">");
+      wrap.innerHTML = "<div class=\"ex-prompt\"><span class=\"num\">"+(idx+1)+".</span>"+promptText+"</div>";
+      set1.appendChild(wrap);
+    });
+    var checkBtn1 = el("button","btn","تحقّقي من إجاباتي");
+    var score1 = el("div","score-line","");
+    set1.appendChild(checkBtn1);
+    set1.appendChild(score1);
+    checkBtn1.addEventListener("click", function(){
+      var ok = 0;
+      var boxes = set1.querySelectorAll("input.blank");
+      boxes.forEach(function(box){
+        var idx = +box.getAttribute("data-idx");
+        var accepted = t.fill[idx].a.map(norm);
+        var given = norm(box.value);
+        var good = accepted.indexOf(given) !== -1;
+        box.classList.remove("ok","bad");
+        box.classList.add(good?"ok":"bad");
+        if(good) ok++;
+      });
+      score1.textContent = "النتيجة: "+ok+" / "+t.fill.length+(ok<t.fill.length?" — راجعي الحقول الملوّنة بالأحمر وحاولي مجددًا":" — أحسنتِ! 🎉");
+      setLessonProgress(t.id, {fillChecked:true, fillScore:ok+"/"+t.fill.length});
+    });
+    drillCard.appendChild(set1);
+
+    /* --- MCQ --- */
+    var set2 = el("div","exercise-set");
+    set2.appendChild(el("h4","", "٢) اختاري الإجابة الصحيحة"));
+    var mcqAnsweredCount = 0;
+    t.mcq.forEach(function(item, qi){
+      var qwrap = el("div","mcq-q");
+      qwrap.innerHTML = "<div class=\"ex-prompt\"><span class=\"num\">"+(qi+1)+".</span>"+item.q+"</div>";
+      var opts = el("div","mcq-opts");
+      item.opts.forEach(function(optText, oi){
+        var label = el("label","mcq-opt");
+        var radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = t.id+"-mcq-"+qi;
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(optText));
+        radio.addEventListener("change", function(){
+          Array.prototype.forEach.call(opts.children, function(lab, i){
+            lab.classList.remove("correct","incorrect");
+            if(i === item.correct) lab.classList.add("correct");
+          });
+          if(oi !== item.correct) label.classList.add("incorrect");
+          setLessonProgress(t.id, {mcqAnswered:true});
+        });
+        opts.appendChild(label);
+      });
+      qwrap.appendChild(opts);
+      set2.appendChild(qwrap);
+    });
+    drillCard.appendChild(set2);
+
+    /* --- Reveal / correction / translation --- */
+    var set3 = el("div","exercise-set");
+    set3.appendChild(el("h4","", "٣) صحّحي الجملة أو ترجميها، ثم تأكّدي من إجابتك"));
+    t.reveal.forEach(function(item, ri){
+      var ritem = el("div","reveal-item");
+      var label = item.translate ? "ترجمي إلى الإنجليزية:" : "صحّحي الخطأ:";
+      var sourceSpan = item.translate
+        ? "<span class=\"ar-src\">"+item.wrong+"</span>"
+        : "<span class=\"en\"><span class=\"wrong\">"+item.wrong+"</span></span>";
+      ritem.innerHTML =
+        "<div class=\"ex-prompt\"><span class=\"num\">"+(ri+1)+". "+label+"</span></div>"+
+        sourceSpan;
+      var row = el("div","reveal-row");
+      var showBtn = el("button","btn ghost","إظهار الإجابة الصحيحة");
+      var ans = el("div","reveal-ans");
+      ans.innerHTML = "<span class=\"en right\">"+item.right+"</span>";
+      showBtn.addEventListener("click", function(){
+        ans.classList.toggle("shown");
+      });
+      var selfLabel = el("label","self-check");
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      selfLabel.appendChild(cb);
+      selfLabel.appendChild(document.createTextNode("أجبت بشكل صحيح بنفسي"));
+      cb.addEventListener("change", function(){
+        var checked = set3.querySelectorAll("input[type=checkbox]:checked").length;
+        setLessonProgress(t.id, {revealDone: checked === t.reveal.length, revealScore: checked+"/"+t.reveal.length});
+      });
+      row.appendChild(showBtn);
+      row.appendChild(selfLabel);
+      ritem.appendChild(row);
+      ritem.appendChild(ans);
+      set3.appendChild(ritem);
+    });
+    drillCard.appendChild(set3);
+
+    var set4 = el("div","exercise-set");
+    set4.appendChild(el("h4","", "٤) رتّبي الكلمات (اسحبي وأفلتي)"));
+    t.daily.slice(0,3).forEach(function(s, i){
+      renderDragExercise(set4, s, i);
+    });
+    drillCard.appendChild(set4);
+
+    container.appendChild(drillCard);
+
+    var tip = el("div","tip");
+    var nextT = TENSES[t.n] ? TENSES[t.n].nameAr : null;
+    tip.innerHTML = "<span>💡</span><span>"+(nextT ? "قبل الانتقال إلى «"+nextT+"»، تأكّدي من إتمام التدريبات الثلاثة أعلاه — الإشارة ✓ ستظهر بجانب هذا الدرس في القائمة الجانبية." : "بعد إتمام هذا الدرس، انتقلي إلى الاختبار الشامل لمراجعة الأزمنة الستة معًا.")+"</span>";
+    container.appendChild(tip);
+  }
+
+  /* ============ RENDER: REVIEW ============ */
+  function renderReview(container){
+    container.appendChild(el("h1","","🎯 اختبار المراجعة الشامل"));
+    container.appendChild(el("p","lede","اثنتا عشرة جملة تخلط بين الأزمنة الستة — اختاري الإجابة الصحيحة لكل جملة، ثم اضغطي «احسبي نتيجتي» في نهاية الصفحة."));
+
+    var card = el("div","card");
+    REVIEW.forEach(function(item, qi){
+      var qwrap = el("div","mcq-q");
+      qwrap.innerHTML = "<div class=\"ex-prompt\"><span class=\"num\">"+(qi+1)+".</span>"+item.q+"</div>";
+      var opts = el("div","mcq-opts");
+      item.opts.forEach(function(optText, oi){
+        var label = el("label","mcq-opt");
+        var radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "review-"+qi;
+        radio.setAttribute("data-qi", qi);
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(optText));
+        opts.appendChild(label);
+      });
+      qwrap.appendChild(opts);
+      card.appendChild(qwrap);
+    });
+
+    var resultBtn = el("button","btn","احسبي نتيجتي");
+    var result = el("div","score-line","");
+    card.appendChild(resultBtn);
+    card.appendChild(result);
+
+    resultBtn.addEventListener("click", function(){
+      var correct = 0;
+      REVIEW.forEach(function(item, qi){
+        var qwrap = card.querySelectorAll(".mcq-q")[qi];
+        var opts = qwrap.querySelector(".mcq-opts");
+        var checked = qwrap.querySelector("input[type=radio]:checked");
+        Array.prototype.forEach.call(opts.children, function(lab, i){
+          lab.classList.remove("correct","incorrect");
+          if(i === item.correct) lab.classList.add("correct");
+        });
+        if(checked){
+          var idx = Array.prototype.indexOf.call(opts.children, checked.closest(".mcq-opt"));
+          if(idx === item.correct) correct++;
+          else checked.closest(".mcq-opt").classList.add("incorrect");
+        }
+      });
+      var pct = Math.round(correct/REVIEW.length*100);
+      var msg;
+      if(correct >= 10) msg = "ممتازة! أتقنتِ الأزمنة الستة. 🌟";
+      else if(correct >= 8) msg = "جيدة جدًا — راجعي الأسئلة الملوّنة بالأحمر.";
+      else if(correct >= 6) msg = "جيدة — يُنصح بمراجعة دروس الأزمنة التي أخطأتِ فيها.";
+      else msg = "راجعي الدروس الستة مرة أخرى قبل إعادة المحاولة.";
+      result.textContent = "النتيجة: "+correct+" / "+REVIEW.length+" ("+pct+"٪) — "+msg;
+      try{
+        progress.review = {score: correct+"/"+REVIEW.length};
+        saveProgress(progress);
+      }catch(e){}
+    });
+
+    container.appendChild(card);
+  }
+
+  function renderGlossary(container){
+    container.appendChild(el("h1","","📚 قاموس المصطلحات"));
+    container.appendChild(el("p","lede","أهم المفردات الواردة في نصوص الدورة (حديث جبريل، والأصول الثلاثة) — اكتبي في المربع للبحث بالعربية أو الإنجليزية."));
+
+    var fcCard = el("div","card");
+    fcCard.appendChild(el("h3","🗂️ بطاقات تعليمية"));
+    fcCard.appendChild(el("p","flip-hint","اضغطي على أي بطاقة لقلبها ومعرفة المعنى."));
+    renderFlipGrid(fcCard, GLOSSARY.slice().sort(function(a,b){ return a[0].localeCompare(b[0]); }).map(function(pair){
+      return ["<span class=\"en\">"+pair[0]+"</span>", pair[1]];
+    }));
+    container.appendChild(fcCard);
+
+    var card = el("div","card");
+    card.appendChild(el("h3","📋 القائمة الكاملة"));
+    var searchWrap = el("div","");
+    searchWrap.style.marginBottom = "14px";
+    var search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "ابحثي عن كلمة...";
+    search.className = "text-input";
+    search.style.width = "100%";
+    search.style.boxSizing = "border-box";
+    search.style.padding = "10px 12px";
+    search.style.borderRadius = "10px";
+    search.style.border = "1px solid var(--line, #ddd)";
+    search.style.fontSize = "1rem";
+    searchWrap.appendChild(search);
+    card.appendChild(searchWrap);
+
+    var table = document.createElement("table");
+    var thead = "<tr><th>English</th><th>العربية</th></tr>";
+    var sorted = GLOSSARY.slice().sort(function(a,b){ return a[0].localeCompare(b[0]); });
+    var tbody = sorted.map(function(pair){
+      return "<tr><td class=\"en\">"+pair[0]+"</td><td>"+pair[1]+"</td></tr>";
+    }).join("");
+    table.innerHTML = thead + tbody;
+    card.appendChild(table);
+
+    var emptyMsg = el("p","lede","لا توجد نتائج مطابقة.");
+    emptyMsg.style.display = "none";
+    card.appendChild(emptyMsg);
+
+    search.addEventListener("input", function(){
+      var q = norm(search.value);
+      var rows = table.querySelectorAll("tr");
+      var visibleCount = 0;
+      rows.forEach(function(row, i){
+        if(i === 0) return; // header
+        var text = norm(row.textContent);
+        var show = q === "" || text.indexOf(q) !== -1;
+        row.style.display = show ? "" : "none";
+        if(show) visibleCount++;
+      });
+      emptyMsg.style.display = visibleCount === 0 ? "" : "none";
+    });
+
+    container.appendChild(card);
+  }
+
+  /* ============ MAIN RENDER ============ */
+  function render(){
+    var container = document.getElementById("content");
+    container.style.removeProperty("--accent");
+    container.style.removeProperty("--accent-soft");
+    container.innerHTML = "";
+    if(active === "intro"){
+      renderIntro(container);
+    } else if(active === "review"){
+      renderReview(container);
+    } else if(active === "glossary"){
+      renderGlossary(container);
+    } else if(active === "dragpage"){
+      renderDragPage(container);
+    } else {
+      var t = TENSES.filter(function(x){ return x.id === active; })[0];
+      if(t) renderLesson(container, t);
+    }
+    var footer = el("footer","credit","مقرر اللغة الإنجليزية - المستوى الثاني - القسم العالي في معهد المسجد النبوي — إعداد: مها الحربي");
+    container.appendChild(footer);
+    renderNav();
+  }
+
+  render();
+
+  /* Preserve state across hot-reload while the page is open */
+  try{
+    if(window.claude && window.claude.hot){
+      window.claude.hot.snapshot(function(){ return {active: active}; });
+      var boot = function(data){
+        if(data && data.active) active = data.active;
+        render();
+      };
+      if(window.claude.hot.ready) window.claude.hot.ready(boot);
+      else boot(window.claude.hot.data);
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
